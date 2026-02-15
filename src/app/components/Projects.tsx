@@ -8,52 +8,37 @@ import { fadeInUp, staggerContainer, cardHoverSmall } from '@/utils/animations'
 
 export default function Projects() {
   return (
-    <div className="container max-w-7xl mx-auto py-12">
-      <motion.h1 
-        className="text-4xl font-bold mb-4 text-center"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        My Projects
-      </motion.h1>
-      <motion.p 
-        className="text-lg text-secondary mb-24 text-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        Here are some of my recent projects. Click on the links to view the code or live demo.
-      </motion.p>
-      
-      <motion.div 
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8"
-        variants={staggerContainer}
-        initial="initial"
-        animate="animate"
-      >
-        {projects.map((project, index) => (
-          <motion.div
-            key={index}
-            className="bg-white dark:bg-dark/50 rounded-lg shadow-md overflow-hidden"
-            variants={fadeInUp}
-            {...cardHoverSmall}
-          >
-            <motion.div 
-              className="aspect-video bg-gray-200 dark:bg-gray-800"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
+    <section className="py-20">
+      <div className="container max-w-7xl mx-auto px-4">
+        <motion.h2 
+          className="text-3xl font-bold mb-12 text-center"
+          {...fadeInUp}
+        >
+          Featured Projects
+        </motion.h2>
+
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+        >
+          {projects.map((project) => (
+            <motion.article
+              key={project.title}
+              className="bg-white dark:bg-dark/50 rounded-lg shadow-md p-6"
+              variants={fadeInUp}
+              {...cardHoverSmall}
             >
-              <Image
-                src={project.image}
-                alt={project.title}
-                className="object-cover w-full h-full"
-                width={500}
-                height={500}
-              />
-            </motion.div>
-            
-            <div className="p-6">
+              <div className="relative aspect-video mb-4 rounded-lg overflow-hidden">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
               <motion.h3 
                 className="text-xl font-semibold mb-2"
                 whileHover={{ x: 5 }}
@@ -62,23 +47,22 @@ export default function Projects() {
                 {project.title}
               </motion.h3>
               <motion.p 
-                className="text-secondary mb-4"
+                className="text-gray-600 dark:text-gray-300 mb-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
                 {project.description}
               </motion.p>
-              
               <motion.div 
                 className="flex flex-wrap gap-2 mb-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                {project.technologies.map((tech, techIndex) => (
+                {project.technologies.map((tech) => (
                   <motion.span
-                    key={techIndex}
+                    key={tech}
                     className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -87,7 +71,6 @@ export default function Projects() {
                   </motion.span>
                 ))}
               </motion.div>
-              
               <motion.div 
                 className="flex gap-4"
                 initial={{ opacity: 0 }}
@@ -117,10 +100,10 @@ export default function Projects() {
                   <span>Live Demo</span>
                 </motion.a>
               </motion.div>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-    </div>
+            </motion.article>
+          ))}
+        </motion.div>
+      </div>
+    </section>
   )
 } 

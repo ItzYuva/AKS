@@ -1,7 +1,16 @@
-import Image from "next/image";
+import Blogs from "./components/Blogs";
+import Hero from "./components/Hero";
+import Newsletter from "./components/Newsletter";
+import Projects from "./components/Projects";
+
 
 export default function Home() {
   return (
-    <div>Hi guys!!!</div>
+    <main>
+      <Hero />
+      <Projects />
+      <Blogs />
+      <Newsletter />
+    </main>
   );
-}
+} 
