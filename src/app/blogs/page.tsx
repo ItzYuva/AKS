@@ -1,7 +1,6 @@
 'use client'
 
 import { blogs } from '@/contents/blogs'
-import Link from 'next/link'
 import { FaCalendarAlt, FaClock } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { fadeInUp, staggerContainer, cardHoverSmall } from '@/utils/animations'
@@ -37,9 +36,9 @@ export default function Blogs() {
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <Link href={`/blogs/${blog.slug}`} className="hover:text-primary transition-colors">
+                <a href={blog.mediumUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                   {blog.title}
-                </Link>
+                </a>
               </motion.h2>
               
               <motion.p 
