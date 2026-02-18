@@ -16,8 +16,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Devfolio | Portfolio Website using Next.js, Tailwind CSS, and Framer Motion",
-  description: "Devfolio is a portfolio website for developers to showcase their projects and skills.",
+  title: "Aditya Sinha",
+  description: "Portfolio of Aditya Sinha — AI Engineer building intelligent systems. Explore my projects, blogs, and more.",
+  keywords: ["AI Engineer", "Machine Learning", "Portfolio", "Aditya Sinha"],
+  authors: [{ name: "Aditya Sinha" }],
 };
 
 export default function RootLayout({
