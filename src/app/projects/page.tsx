@@ -1,15 +1,41 @@
 'use client'
 
-import { projects } from '@/contents/projects'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { fadeInUp, staggerContainer, cardHoverSmall } from '@/utils/animations'
 
+interface Project {
+  _id: string
+  title: string
+  description: string
+  technologies: string[]
+  githubLink: string
+  demoLink: string
+  image: string
+}
+
 export default function Projects() {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/projects')
+      .then(res => res.json())
+      .then(data => { setProjects(data); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
+
+  if (loading) return (
+    <div className="container max-w-7xl mx-auto py-12 text-center text-secondary">
+      Loading projects...
+    </div>
+  )
+
   return (
     <div className="container max-w-7xl mx-auto py-12">
-      <motion.h1 
+      <motion.h1
         className="text-4xl font-bold mb-4 text-center"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -17,7 +43,7 @@ export default function Projects() {
       >
         My Projects
       </motion.h1>
-      <motion.p 
+      <motion.p
         className="text-lg text-secondary mb-24 text-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -25,21 +51,21 @@ export default function Projects() {
       >
         Here are some of my recent projects. Click on the links to view the code or live demo.
       </motion.p>
-      
-      <motion.div 
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8"
+
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
         variants={staggerContainer}
         initial="initial"
         animate="animate"
       >
-        {projects.map((project, index) => (
+        {projects.map((project) => (
           <motion.div
-            key={index}
+            key={project._id}
             className="bg-white dark:bg-dark/50 rounded-lg shadow-md overflow-hidden"
             variants={fadeInUp}
             {...cardHoverSmall}
           >
-            <motion.div 
+            <motion.div
               className="aspect-video bg-gray-200 dark:bg-gray-800"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
@@ -52,16 +78,16 @@ export default function Projects() {
                 height={500}
               />
             </motion.div>
-            
+
             <div className="p-6">
-              <motion.h3 
+              <motion.h3
                 className="text-xl font-semibold mb-2"
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 {project.title}
               </motion.h3>
-              <motion.p 
+              <motion.p
                 className="text-secondary mb-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -69,16 +95,16 @@ export default function Projects() {
               >
                 {project.description}
               </motion.p>
-              
-              <motion.div 
+
+              <motion.div
                 className="flex flex-wrap gap-2 mb-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                {project.technologies.map((tech, techIndex) => (
+                {project.technologies.map((tech) => (
                   <motion.span
-                    key={techIndex}
+                    key={tech}
                     className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -87,8 +113,8 @@ export default function Projects() {
                   </motion.span>
                 ))}
               </motion.div>
-              
-              <motion.div 
+
+              <motion.div
                 className="flex gap-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -123,4 +149,4 @@ export default function Projects() {
       </motion.div>
     </div>
   )
-} 
+}
