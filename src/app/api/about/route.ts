@@ -1,26 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mongodb'
-import Project from '@/models/Project'
+import About from '@/models/About'
 
-// GET all projects
+// GET about info (single document)
 export async function GET() {
   try {
     await connectDB()
-    const projects = await Project.find().sort({ createdAt: -1 })
-    return NextResponse.json(projects)
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 })
+    const about = await About.findOne()
+    return NextResponse.json(about)
+  } catch {
+    return NextResponse.json({ error: 'Failed to fetch about info' }, { status: 500 })
   }
 }
 
-// POST create a new project
-export async function POST(request: NextRequest) {
+// PUT update about info
+export async function PUT(request: NextRequest) {
   try {
     await connectDB()
     const body = await request.json()
-    const project = await Project.create(body)
-    return NextResponse.json(project, { status: 201 })
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to create project' }, { status: 500 })
+    const about = await About.findOneAndUpdate({}, body, { new: true, upsert: true })
+    return NextResponse.json(about)
+  } catch {
+    return NextResponse.json({ error: 'Failed to update about info' }, { status: 500 })
   }
 }

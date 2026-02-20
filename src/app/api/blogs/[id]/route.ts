@@ -1,26 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mongodb'
-import Project from '@/models/Project'
+import Blog from '@/models/Blog'
 
-// GET all projects
-export async function GET() {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
+    const { id } = await params
     await connectDB()
-    const projects = await Project.find().sort({ createdAt: -1 })
-    return NextResponse.json(projects)
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 })
+    const blog = await Blog.findById(id)
+    if (!blog) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    return NextResponse.json(blog)
+  } catch {
+    return NextResponse.json({ error: 'Failed to fetch blog' }, { status: 500 })
   }
 }
 
-// POST create a new project
-export async function POST(request: NextRequest) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
+    const { id } = await params
     await connectDB()
     const body = await request.json()
-    const project = await Project.create(body)
-    return NextResponse.json(project, { status: 201 })
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to create project' }, { status: 500 })
+    const blog = await Blog.findByIdAndUpdate(id, body, { new: true })
+    if (!blog) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    return NextResponse.json(blog)
+  } catch {
+    return NextResponse.json({ error: 'Failed to update blog' }, { status: 500 })
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+    await connectDB()
+    const blog = await Blog.findByIdAndDelete(id)
+    if (!blog) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    return NextResponse.json({ message: 'Deleted' })
+  } catch {
+    return NextResponse.json({ error: 'Failed to delete blog' }, { status: 500 })
   }
 }

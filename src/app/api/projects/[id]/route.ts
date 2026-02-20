@@ -2,25 +2,48 @@ import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mongodb'
 import Project from '@/models/Project'
 
-// GET all projects
-export async function GET() {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
+    const { id } = await params
     await connectDB()
-    const projects = await Project.find().sort({ createdAt: -1 })
-    return NextResponse.json(projects)
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 })
+    const project = await Project.findById(id)
+    if (!project) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    return NextResponse.json(project)
+  } catch {
+    return NextResponse.json({ error: 'Failed to fetch project' }, { status: 500 })
   }
 }
 
-// POST create a new project
-export async function POST(request: NextRequest) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
+    const { id } = await params
     await connectDB()
     const body = await request.json()
-    const project = await Project.create(body)
-    return NextResponse.json(project, { status: 201 })
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to create project' }, { status: 500 })
+    const project = await Project.findByIdAndUpdate(id, body, { new: true })
+    if (!project) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    return NextResponse.json(project)
+  } catch {
+    return NextResponse.json({ error: 'Failed to update project' }, { status: 500 })
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+    await connectDB()
+    const project = await Project.findByIdAndDelete(id)
+    if (!project) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    return NextResponse.json({ message: 'Deleted' })
+  } catch {
+    return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 })
   }
 }
