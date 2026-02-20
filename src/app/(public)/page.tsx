@@ -1,6 +1,6 @@
 import Blogs from "../components/Blogs";
 import Hero from "../components/Hero";
-import Newsletter from "../components/Newsletter";
+import GitHubContributions from "../components/GitHubContributions";
 import Projects from "../components/Projects";
 
 
@@ -10,7 +10,7 @@ export default function Home() {
       <Hero />
       <Projects />
       <Blogs />
-      <Newsletter />
+      <GitHubContributions />
     </main>
   );
 }
