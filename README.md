@@ -1,10 +1,6 @@
 # ✦ Aditya Sinha | AI Engineer Portfolio
 
-Welcome to the official repository for my personal developer portfolio, designed and built from the ground up to showcase my work, projects, and insights in the fields of Artificial Intelligence and Software Engineering.
-
-![Portfolio Preview Showcase](public/globe.svg) *^(Replace with an actual screenshot once deployed!)*
-
-This project is a modern, high-performance web application featuring a sleek dark-mode aesthetic, dynamic micro animations, a natively integrated GitHub contribution heatmap, and a fully functional full-stack backend.
+Welcome to the official repository for my personal portfolio, designed and built from the ground up to showcase my work, projects, and insights in the fields of Artificial Intelligence and Software Engineering.
 
 ## Tech Stack
 
