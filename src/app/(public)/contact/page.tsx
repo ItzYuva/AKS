@@ -74,23 +74,24 @@ export default function Contact() {
           </motion.div>
 
           <motion.div
-            className="space-y-4"
+            className="space-y-6 mt-8"
             variants={fadeIn}
             initial="initial"
             animate="animate"
           >
-            {contactInfo && (
+            {contactInfo ? (
               <>
                 <motion.div
                   className="flex items-center gap-4"
-                  variants={fadeInUp}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
                   whileHover={{ x: 10 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  transition={{ duration: 0.4 }}
                 >
-                  <FaEnvelope className="h-6 w-6 text-primary" />
+                  <FaEnvelope className="h-6 w-6 text-[#007AFF]" />
                   <div>
-                    <h3 className="font-semibold">Email</h3>
-                    <a href={`mailto:${contactInfo.email}`} className="text-secondary hover:text-primary">
+                    <h3 className="font-semibold text-lg dark:text-white text-gray-900">Email</h3>
+                    <a href={`mailto:${contactInfo.email}`} className="dark:text-gray-400 text-gray-600 hover:text-[#007AFF] transition-colors">
                       {contactInfo.email}
                     </a>
                   </div>
@@ -98,14 +99,15 @@ export default function Contact() {
 
                 <motion.div
                   className="flex items-center gap-4"
-                  variants={fadeInUp}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
                   whileHover={{ x: 10 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                  <FaPhone className="h-6 w-6 text-primary" />
+                  <FaPhone className="h-6 w-6 text-[#007AFF]" />
                   <div>
-                    <h3 className="font-semibold">Phone</h3>
-                    <a href={`tel:${contactInfo.phone}`} className="text-secondary hover:text-primary">
+                    <h3 className="font-semibold text-lg dark:text-white text-gray-900">Phone</h3>
+                    <a href={`tel:${contactInfo.phone}`} className="dark:text-gray-400 text-gray-600 hover:text-[#007AFF] transition-colors">
                       {contactInfo.phone}
                     </a>
                   </div>
@@ -113,17 +115,30 @@ export default function Contact() {
 
                 <motion.div
                   className="flex items-center gap-4"
-                  variants={fadeInUp}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
                   whileHover={{ x: 10 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
                 >
-                  <FaMapMarkerAlt className="h-6 w-6 text-primary" />
+                  <FaMapMarkerAlt className="h-6 w-6 text-[#007AFF]" />
                   <div>
-                    <h3 className="font-semibold">Location</h3>
-                    <p className="text-secondary">{contactInfo.location}</p>
+                    <h3 className="font-semibold text-lg dark:text-white text-gray-900">Location</h3>
+                    <p className="dark:text-gray-400 text-gray-600">{contactInfo.location}</p>
                   </div>
                 </motion.div>
               </>
+            ) : (
+              <div className="space-y-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="flex items-center gap-4 animate-pulse">
+                    <div className="h-6 w-6 rounded-md bg-gray-200 dark:bg-gray-700" />
+                    <div className="space-y-2">
+                      <div className="h-5 w-20 rounded bg-gray-200 dark:bg-gray-700" />
+                      <div className="h-4 w-40 rounded bg-gray-200 dark:bg-gray-700" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </motion.div>
         </motion.div>
