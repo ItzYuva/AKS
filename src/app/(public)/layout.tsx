@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import PreLoader from '../components/PreLoader'
 
 export default function PublicLayout({
   children,
@@ -8,6 +9,7 @@ export default function PublicLayout({
 }) {
   return (
     <>
+      <PreLoader />
       <Navbar />
       <main className="min-h-screen pt-24">
         {children}
