@@ -3,18 +3,22 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
+import { usePathname } from 'next/navigation';
+
 export default function PreLoader() {
     const [isLoading, setIsLoading] = useState(true);
+    const pathname = usePathname();
 
     useEffect(() => {
-        // We'll show the loader for at least 1.5 seconds so it feels deliberate
-        // Without it just flashing uncomfortably
+        // Trigger the loader every time the user navigates to a new page
+        setIsLoading(true);
+
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 1500);
+        }, 1200); // slightly shorter wait for inner-page navigations to feel snappier
 
         return () => clearTimeout(timer);
-    }, []);
+    }, [pathname]);
 
     return (
         <AnimatePresence>
