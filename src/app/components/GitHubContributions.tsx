@@ -17,22 +17,14 @@ interface Stats {
   bestDay: { date: string; count: number }
 }
 
-const HEATMAP_COLORS = {
-  light: [
-    'bg-gray-200',
-    'bg-blue-200',
-    'bg-blue-400',
-    'bg-blue-500',
-    'bg-[#007AFF]',
-  ],
-  dark: [
-    'bg-[#1e293b]',
-    'bg-[#1e3a5f]',
-    'bg-[#0055b3]',
-    'bg-[#006ae6]',
-    'bg-[#007AFF]',
-  ],
-}
+// Full static class strings so Tailwind can detect them
+const HEATMAP_CLASSES = [
+  'bg-gray-200 dark:bg-[#1e293b]',
+  'bg-blue-200 dark:bg-[#1e3a5f]',
+  'bg-blue-400 dark:bg-[#0055b3]',
+  'bg-blue-500 dark:bg-[#006ae6]',
+  'bg-[#007AFF] dark:bg-[#007AFF]',
+]
 
 function calculateStats(contributions: ContributionDay[]): Stats {
   const today = new Date().toISOString().split('T')[0]
@@ -186,7 +178,7 @@ export default function GitHubContributions() {
                   {last30.map((day, i) => (
                     <motion.div
                       key={day.date}
-                      className={`w-9 h-9 sm:w-10 sm:h-10 rounded-md transition-all cursor-default ${HEATMAP_COLORS.light[day.level]} dark:${HEATMAP_COLORS.dark[day.level]}`}
+                      className={`w-9 h-9 sm:w-10 sm:h-10 rounded-md transition-all cursor-default ${HEATMAP_CLASSES[day.level]}`}
                       initial={{ opacity: 0, scale: 0.5 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: i * 0.02 }}
@@ -206,10 +198,10 @@ export default function GitHubContributions() {
                 {/* Legend */}
                 <div className="flex items-center justify-end gap-1.5 mt-4 text-xs text-gray-500 dark:text-gray-400">
                   <span>Less</span>
-                  {[0, 1, 2, 3, 4].map(level => (
+                  {HEATMAP_CLASSES.map((cls, level) => (
                     <div
                       key={level}
-                      className={`w-4 h-4 rounded-sm ${HEATMAP_COLORS.light[level]} dark:${HEATMAP_COLORS.dark[level]}`}
+                      className={`w-4 h-4 rounded-sm ${cls}`}
                     />
                   ))}
                   <span>More</span>
