@@ -192,7 +192,7 @@ export default function Contact() {
             </motion.button>
 
             {status === 'success' && (
-              <motion.p className="text-green-500 text-center" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+              <motion.p className="text-[#007AFF] text-center" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                 Message sent successfully!
               </motion.p>
             )}
