@@ -22,8 +22,18 @@ export default function Blogs() {
   useEffect(() => {
     fetch('/api/blogs')
       .then(res => res.json())
-      .then(data => { setBlogs(data); setLoading(false) })
-      .catch(() => setLoading(false))
+      .then(data => {
+        if (Array.isArray(data)) {
+          setBlogs(data)
+        } else {
+          console.error("API returned non-array data:", data)
+        }
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error("Fetch failed", err)
+        setLoading(false)
+      })
   }, [])
 
   if (loading) return (

@@ -23,8 +23,18 @@ export default function Projects() {
   useEffect(() => {
     fetch('/api/projects')
       .then(res => res.json())
-      .then(data => { setProjects(data); setLoading(false) })
-      .catch(() => setLoading(false))
+      .then(data => {
+        if (Array.isArray(data)) {
+          setProjects(data)
+        } else {
+          console.error("API returned non-array data:", data)
+        }
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error("Fetch failed", err)
+        setLoading(false)
+      })
   }, [])
 
   if (loading) return (
