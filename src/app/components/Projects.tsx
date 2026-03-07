@@ -64,7 +64,7 @@ export default function Projects() {
           {projects.map((project) => (
             <motion.article
               key={project._id}
-              className="bg-white dark:bg-dark/50 rounded-lg shadow-md p-6"
+              className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md p-6"
               variants={fadeInUp}
               {...cardHoverSmall}
             >

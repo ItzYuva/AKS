@@ -7,6 +7,7 @@ import Image from 'next/image';
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  isError?: boolean;
 }
 
 const SUGGESTED_QUESTIONS = [
@@ -67,7 +68,20 @@ export default function ChatWidget() {
         }),
       });
 
-      if (!res.ok) throw new Error('Failed to get response');
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        const errorMsg = errorData?.error || 'Failed to get response';
+        const isRateLimit = res.status === 429;
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: errorMsg, isError: true },
+        ]);
+        if (isRateLimit) {
+          // keep the rate limit message visually distinct
+        }
+        setIsLoading(false);
+        return;
+      }
 
       const reader = res.body?.getReader();
       if (!reader) throw new Error('No reader available');
@@ -255,7 +269,9 @@ export default function ChatWidget() {
                     className={`max-w-[75%] px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap break-words ${
                       msg.role === 'user'
                         ? 'bg-primary text-white rounded-2xl rounded-br-md'
-                        : 'bg-white/10 text-gray-200 rounded-2xl rounded-bl-md backdrop-blur-sm'
+                        : msg.isError
+                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-2xl rounded-bl-md'
+                          : 'bg-white/10 text-gray-200 rounded-2xl rounded-bl-md backdrop-blur-sm'
                     }`}
                   >
                     {msg.content}
@@ -301,6 +317,7 @@ export default function ChatWidget() {
                       sendMessage();
                     }
                   }}
+                  maxLength={300}
                   placeholder="Ask me anything..."
                   disabled={isLoading}
                   className="flex-1 bg-transparent text-white text-sm py-2 outline-none placeholder-gray-500 disabled:opacity-50"
@@ -317,6 +334,11 @@ export default function ChatWidget() {
                   </svg>
                 </button>
               </div>
+              {input.length > 0 && (
+                <p className={`text-xs mt-1 text-right pr-1 ${input.length > 250 ? 'text-red-400' : 'text-gray-500'}`}>
+                  {input.length}/300
+                </p>
+              )}
             </div>
           </motion.div>
         )}

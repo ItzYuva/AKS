@@ -87,7 +87,7 @@ export default function About() {
             {about.skills.map((skill, i) => (
               <motion.div
                 key={i}
-                className="bg-white dark:bg-dark/50 p-6 rounded-lg shadow-md"
+                className="bg-white/80 dark:bg-dark/50 p-6 rounded-lg shadow-md"
                 variants={fadeInUp}
                 {...cardHover}
               >
@@ -121,7 +121,7 @@ export default function About() {
             {about.experience.map((exp, i) => (
               <motion.div
                 key={i}
-                className="bg-white dark:bg-dark/50 p-6 rounded-lg shadow-md"
+                className="bg-white/80 dark:bg-dark/50 p-6 rounded-lg shadow-md"
                 variants={fadeInUp}
                 {...cardHoverSmall}
               >
@@ -161,7 +161,7 @@ export default function About() {
             {about.education.map((edu, i) => (
               <motion.div
                 key={i}
-                className={`bg-white dark:bg-dark/50 p-6 rounded-lg shadow-md${i > 0 ? ' mt-8' : ''}`}
+                className={`bg-white/80 dark:bg-dark/50 p-6 rounded-lg shadow-md${i > 0 ? ' mt-8' : ''}`}
                 variants={fadeInUp}
                 {...cardHoverSmall}
               >

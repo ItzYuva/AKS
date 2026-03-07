@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./context/ThemeContext";
 import ChatWidget from "@/components/ChatWidget";
+import GridBackground from "@/components/GridBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,9 +29,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-    <body className={`bg-white transition-colors dark:bg-gray-900 dark:text-white ${geistSans.variable} ${geistMono.variable}`}>
+    <body className={`bg-white dark:bg-[#020B18] transition-colors dark:text-white ${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider>
-          {children}
+          <GridBackground />
+          <div className="relative z-10 overflow-x-hidden">
+            {children}
+          </div>
           <ChatWidget />
         </ThemeProvider>
       </body>

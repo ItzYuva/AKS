@@ -26,7 +26,7 @@ export default function PreLoader() {
                 <motion.div
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
-                    className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white dark:bg-gray-900"
+                    className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white dark:bg-[#020B18]"
                 >
                     <div className="relative flex items-center justify-center">
                         <motion.div

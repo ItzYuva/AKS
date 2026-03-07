@@ -6,6 +6,20 @@ import Project, { IProject } from "@/models/Project";
 import Blog, { IBlog } from "@/models/Blog";
 import Contact, { IContact } from "@/models/Contact";
 
+// --- IP-based rate limiting ---
+const rateLimitMap = new Map<string, number[]>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX = 10; // max requests per window
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const timestamps = rateLimitMap.get(ip) || [];
+  const recent = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
+  recent.push(now);
+  rateLimitMap.set(ip, recent);
+  return recent.length > RATE_LIMIT_MAX;
+}
+
 const BASE_PROMPT = `You are Aditya Sinha's personal AI assistant embedded on his portfolio website. Your ONLY purpose is to answer questions about Aditya Sinha.
 
 ## IMPORTANT RULES:
@@ -14,7 +28,8 @@ const BASE_PROMPT = `You are Aditya Sinha's personal AI assistant embedded on hi
    "I'm here to answer questions about Aditya only! Feel free to ask me about his skills, projects, experience, or anything else about him."
 3. Be friendly, concise, and helpful.
 4. Do not make up information. Only use what is provided below.
-5. If you don't have specific information to answer a question about Aditya, say something like: "I don't have that specific detail about Aditya right now, but feel free to reach out to him directly via the contact page!"`;
+5. If you don't have specific information to answer a question about Aditya, say something like: "I don't have that specific detail about Aditya right now, but feel free to reach out to him directly via the contact page!"
+6. Keep all your responses concise and under 100 words.`;
 
 async function buildSystemPrompt(): Promise<string> {
   await connectDB();
@@ -94,11 +109,30 @@ async function buildSystemPrompt(): Promise<string> {
 
 export async function POST(req: NextRequest) {
   try {
+    // --- Rate limiting by IP ---
+    const forwarded = req.headers.get("x-forwarded-for");
+    const ip = forwarded?.split(",")[0].trim() || "unknown";
+    if (isRateLimited(ip)) {
+      return Response.json(
+        { error: "Slow down! You're sending too many messages. Please wait a minute." },
+        { status: 429 }
+      );
+    }
+
     const { messages } = await req.json();
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return Response.json(
         { error: "Messages are required" },
+        { status: 400 }
+      );
+    }
+
+    // --- Message length validation ---
+    const lastMsg = messages[messages.length - 1];
+    if (lastMsg?.content && lastMsg.content.length > 500) {
+      return Response.json(
+        { error: "Message is too long. Please keep it under 300 characters." },
         { status: 400 }
       );
     }
@@ -126,13 +160,16 @@ export async function POST(req: NextRequest) {
         !(m.role === "assistant" && i === 0)
     );
 
-    const history = apiMessages.slice(0, -1).map((m: { role: string; content: string }) => ({
+    // Only send the last 6 messages to limit token usage
+    const recentMessages = apiMessages.slice(-6);
+
+    const history = recentMessages.slice(0, -1).map((m: { role: string; content: string }) => ({
       role: m.role === "assistant" ? "model" : "user",
       parts: [{ text: m.content }],
     }));
 
     const chat = model.startChat({ history });
-    const lastMessage = apiMessages[apiMessages.length - 1].content;
+    const lastMessage = recentMessages[recentMessages.length - 1].content;
 
     const result = await chat.sendMessageStream(lastMessage);
 

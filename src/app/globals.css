@@ -17,6 +17,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 a {
   transition: all 0.2s ease;
 }

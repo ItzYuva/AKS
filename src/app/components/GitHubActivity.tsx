@@ -61,7 +61,7 @@ export default function GitHubActivity() {
     const skeletonCards = [1, 2, 3].map((i) => (
         <div
             key={`skeleton-card-${i}`}
-            className="dark:bg-gray-800/60 bg-gray-100 rounded-xl p-4 border dark:border-gray-700 border-gray-200 animate-pulse"
+            className="dark:bg-gray-800/60 bg-gray-100/70 rounded-xl p-4 border dark:border-gray-700 border-gray-200 animate-pulse"
         >
             <div className="flex items-center space-x-3 mb-2">
                 <div className="w-5 h-5 rounded-full bg-gray-300 dark:bg-gray-600" />
@@ -80,7 +80,7 @@ export default function GitHubActivity() {
 
     if (loading || (!data && !loading)) {
         return (
-            <section className="py-20 bg-white dark:bg-gray-900">
+            <section className="py-20 bg-transparent">
                 <div className="container mx-auto px-4 max-w-6xl">
                     <motion.div
                         variants={fadeInUp}
@@ -118,14 +118,14 @@ export default function GitHubActivity() {
 
     if (data?.error) {
         return (
-            <section className="py-20 bg-white dark:bg-gray-900">
+            <section className="py-20 bg-transparent">
                 <div className="container mx-auto px-4 max-w-6xl">
                     <motion.div
                         variants={fadeInUp}
                         initial="initial"
                         whileInView="animate"
                         viewport={{ once: true }}
-                        className="text-center p-8 dark:bg-gray-800/60 bg-gray-100 rounded-xl border border-red-500/50 max-w-2xl mx-auto"
+                        className="text-center p-8 dark:bg-gray-800/60 bg-gray-100/70 rounded-xl border border-red-500/50 max-w-2xl mx-auto"
                     >
                         <h3 className="text-red-500 text-xl font-bold mb-2">GitHub Integration Notice</h3>
                         <p className="dark:text-gray-300 text-gray-700">{data.error}</p>
@@ -139,7 +139,7 @@ export default function GitHubActivity() {
     }
 
     return (
-        <section className="py-10 sm:py-20 bg-white dark:bg-gray-900">
+        <section className="py-10 sm:py-20 bg-transparent">
             <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
                 <motion.div
                     variants={fadeInUp}
@@ -160,7 +160,7 @@ export default function GitHubActivity() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="dark:bg-[#1F2937]/60 bg-gray-100 rounded-xl p-4 border dark:border-gray-700 border-gray-200 flex flex-col items-start shadow-sm transition-transform hover:-translate-y-1">
+                        <div className="dark:bg-[#1F2937]/60 bg-gray-100/70 rounded-xl p-4 border dark:border-gray-700 border-gray-200 flex flex-col items-start shadow-sm transition-transform hover:-translate-y-1">
                             <div className="flex items-center gap-2 mb-2">
                                 <FaCalendarAlt className="text-[#007AFF] text-lg" />
                                 <span className="dark:text-gray-400 text-gray-600 font-medium text-sm">Current Streak</span>
@@ -168,7 +168,7 @@ export default function GitHubActivity() {
                             <span className="text-[#007AFF] font-bold text-xl">{data?.streak || 0} days</span>
                         </div>
 
-                        <div className="dark:bg-[#1F2937]/60 bg-gray-100 rounded-xl p-4 border dark:border-gray-700 border-gray-200 flex flex-col items-start shadow-sm transition-transform hover:-translate-y-1">
+                        <div className="dark:bg-[#1F2937]/60 bg-gray-100/70 rounded-xl p-4 border dark:border-gray-700 border-gray-200 flex flex-col items-start shadow-sm transition-transform hover:-translate-y-1">
                             <div className="flex items-center gap-2 mb-2">
                                 <FaFire className="text-[#007AFF] text-lg" />
                                 <span className="dark:text-gray-400 text-gray-600 font-medium text-sm">Total Contributions</span>
@@ -176,7 +176,7 @@ export default function GitHubActivity() {
                             <span className="font-bold text-xl dark:text-white text-gray-900">{data?.totalContributions || 0}</span>
                         </div>
 
-                        <div className="dark:bg-[#1F2937]/60 bg-gray-100 rounded-xl p-4 border dark:border-gray-700 border-gray-200 flex flex-col items-start shadow-sm transition-transform hover:-translate-y-1">
+                        <div className="dark:bg-[#1F2937]/60 bg-gray-100/70 rounded-xl p-4 border dark:border-gray-700 border-gray-200 flex flex-col items-start shadow-sm transition-transform hover:-translate-y-1">
                             <div className="flex items-center gap-2 mb-2">
                                 <FaStar className="text-[#007AFF] text-lg" />
                                 <span className="dark:text-gray-400 text-gray-600 font-medium text-sm">Best Day</span>
@@ -185,7 +185,7 @@ export default function GitHubActivity() {
                         </div>
                     </div>
 
-                    <div className="mt-6 dark:bg-[#1F2937]/40 bg-gray-50 rounded-2xl p-5 border dark:border-gray-800 border-gray-200">
+                    <div className="mt-6 dark:bg-[#1F2937]/40 bg-gray-50/70 rounded-2xl p-5 border dark:border-gray-800 border-gray-200">
                         <h3 className="dark:text-gray-300 text-gray-700 mb-4 font-semibold text-center text-base">Last 30 Days</h3>
                         <div className="flex flex-wrap justify-center gap-2 mx-auto max-w-4xl">
                             {data?.last30Days.map((day, idx) => {

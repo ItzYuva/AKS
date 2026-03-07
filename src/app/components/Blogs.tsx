@@ -63,7 +63,7 @@ export default function Blogs() {
           {blogs.map((blog) => (
             <motion.article
               key={blog._id}
-              className="bg-white dark:bg-dark/50 rounded-lg shadow-md p-6"
+              className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md p-6"
               variants={fadeInUp}
               {...cardHoverSmall}
             >
