@@ -45,17 +45,17 @@ export default function Blogs() {
   )
 
   return (
-    <section className="py-20">
-      <div className="container max-w-7xl mx-auto px-4">
+    <section className="py-10 sm:py-20">
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6">
         <motion.h2
-          className="text-3xl font-bold mb-12 text-center"
+          className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-12 text-center"
           {...fadeInUp}
         >
           Latest Blog Posts
         </motion.h2>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8"
           variants={staggerContainer}
           initial="initial"
           animate="animate"

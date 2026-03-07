@@ -90,7 +90,7 @@ export default function GitHubActivity() {
                         className="flex flex-col gap-6"
                     >
                         <div className="text-center mb-6">
-                            <h2 className="text-3xl md:text-4xl mb-4">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4">
                                 <span className="font-bold">GitHub</span>{' '}
                                 <span className="text-[#007AFF]">Activity</span>
                             </h2>
@@ -139,8 +139,8 @@ export default function GitHubActivity() {
     }
 
     return (
-        <section className="py-20 bg-white dark:bg-gray-900">
-            <div className="container mx-auto px-4 max-w-6xl">
+        <section className="py-10 sm:py-20 bg-white dark:bg-gray-900">
+            <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
                 <motion.div
                     variants={fadeInUp}
                     initial="initial"
@@ -149,7 +149,7 @@ export default function GitHubActivity() {
                     className="flex flex-col gap-6"
                 >
                     <div className="text-center mb-6">
-                        <h2 className="text-3xl md:text-4xl mb-4">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4">
                             <span className="font-bold dark:text-white text-gray-900">GitHub</span>{' '}
                             <span className="text-[#007AFF]">Activity</span>
                         </h2>
