@@ -25,6 +25,7 @@ export interface IAbout {
   skills: ISkill[]
   experience: IExperience[]
   education: IEducation[]
+  chatbotInfo?: string
   createdAt?: Date
   updatedAt?: Date
 }
@@ -54,6 +55,7 @@ const AboutSchema = new Schema<IAbout>(
         description: { type: String, required: true },
       },
     ],
+    chatbotInfo: { type: String, default: '' },
   },
   { timestamps: true }
 )

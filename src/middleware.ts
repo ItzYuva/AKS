@@ -23,7 +23,7 @@ export function middleware(request: NextRequest) {
 
   // Protect mutating API routes (POST/PUT/DELETE)
   if (pathname.startsWith('/api/') && request.method !== 'GET') {
-    const isPublicApi = pathname === '/api/contact' || pathname === '/api/admin/login'
+    const isPublicApi = pathname === '/api/contact' || pathname === '/api/admin/login' || pathname === '/api/chat'
     if (!isPublicApi) {
       const token = request.cookies.get('admin_session')?.value
       if (!token || !isValidToken(token)) {

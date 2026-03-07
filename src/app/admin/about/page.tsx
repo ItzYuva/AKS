@@ -15,6 +15,7 @@ export default function AdminAbout() {
   const [skills, setSkills] = useState<Skill[]>([{ name: '', level: '' }])
   const [experience, setExperience] = useState<Experience[]>([{ title: '', company: '', period: '', description: [''] }])
   const [education, setEducation] = useState<Education[]>([{ degree: '', institution: '', period: '', description: '' }])
+  const [chatbotInfo, setChatbotInfo] = useState('')
 
   useEffect(() => {
     fetch('/api/about')
@@ -25,6 +26,7 @@ export default function AdminAbout() {
           if (data.skills?.length) setSkills(data.skills)
           if (data.experience?.length) setExperience(data.experience)
           if (data.education?.length) setEducation(data.education)
+          if (data.chatbotInfo) setChatbotInfo(data.chatbotInfo)
         }
         setLoading(false)
       })
@@ -38,7 +40,7 @@ export default function AdminAbout() {
     const res = await fetch('/api/about', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ bio, skills, experience, education }),
+      body: JSON.stringify({ bio, skills, experience, education, chatbotInfo }),
     })
     setSaving(false)
     if (res.ok) setSuccess(true)
@@ -216,6 +218,13 @@ export default function AdminAbout() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* Chatbot Extra Info */}
+        <section>
+          <h2 className="text-xl font-semibold mb-2">Chatbot Extra Info</h2>
+          <p className="text-sm text-gray-500 mb-4">Add any extra information about yourself that the AI chatbot should know (hobbies, fun facts, personal story, achievements, etc.). This won&apos;t appear on the website — only the chatbot uses it.</p>
+          <textarea value={chatbotInfo} onChange={e => setChatbotInfo(e.target.value)} rows={6} placeholder="E.g. I love playing chess, I'm a huge fan of open source, I won a hackathon in 2023..." className={inputClass} />
         </section>
 
         <div className="flex items-center gap-4">
