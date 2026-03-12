@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react'
 import { FaCalendarAlt, FaClock } from 'react-icons/fa'
 import { motion } from 'framer-motion'
-import { fadeInUp, staggerContainer, cardHoverSmall } from '@/utils/animations'
+import { fadeInUp, cardHoverSmall } from '@/utils/animations'
+import MasonryGrid from '@/app/components/MasonryGrid'
 
 interface Blog {
   _id: string
@@ -43,17 +44,14 @@ export default function Blogs() {
         Blog Posts
       </motion.h1>
 
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        variants={staggerContainer}
-        initial="initial"
-        animate="animate"
-      >
+      <MasonryGrid>
         {blogs.map((blog) => (
           <motion.article
             key={blog._id}
             className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md overflow-hidden"
             variants={fadeInUp}
+            initial="initial"
+            animate="animate"
             {...cardHoverSmall}
           >
             <div className="p-6">
@@ -68,7 +66,7 @@ export default function Blogs() {
               </motion.h2>
 
               <motion.p
-                className="text-secondary mb-4"
+                className="text-secondary mb-4 wrap-break-word"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
@@ -101,7 +99,7 @@ export default function Blogs() {
             </div>
           </motion.article>
         ))}
-      </motion.div>
+      </MasonryGrid>
     </div>
   )
 }

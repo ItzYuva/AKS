@@ -1,9 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { FaCalendarAlt, FaClock } from 'react-icons/fa'
 import { motion } from 'framer-motion'
-import { fadeInUp, staggerContainer, cardHoverSmall } from '@/utils/animations'
+import { fadeInUp, cardHoverSmall } from '@/utils/animations'
+import MasonryGrid from './MasonryGrid'
 
 interface Blog {
   _id: string
@@ -54,17 +56,14 @@ export default function Blogs() {
           Latest Blog Posts
         </motion.h2>
 
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8"
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
-        >
-          {blogs.map((blog) => (
+        <MasonryGrid>
+          {blogs.slice(0, 6).map((blog) => (
             <motion.article
               key={blog._id}
-              className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md p-6"
+              className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md p-6 overflow-hidden"
               variants={fadeInUp}
+              initial="initial"
+              animate="animate"
               {...cardHoverSmall}
             >
               <a href={blog.mediumUrl} target="_blank" rel="noopener noreferrer">
@@ -77,7 +76,7 @@ export default function Blogs() {
                 </motion.h3>
               </a>
               <motion.p
-                className="text-gray-600 dark:text-gray-300 mb-4"
+                className="text-gray-600 dark:text-gray-300 mb-4 wrap-break-word"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
@@ -107,7 +106,25 @@ export default function Blogs() {
               </motion.div>
             </motion.article>
           ))}
-        </motion.div>
+        </MasonryGrid>
+
+        {blogs.length > 6 && (
+          <motion.div
+            className="flex justify-center mt-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="/blogs"
+                className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                Show More
+              </Link>
+            </motion.div>
+          </motion.div>
+        )}
       </div>
     </section>
   )

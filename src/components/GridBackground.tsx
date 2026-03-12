@@ -14,34 +14,34 @@ interface ThemeColors {
 
 const darkTheme: ThemeColors = {
   base: 'transparent',
-  border: 'rgba(0, 100, 255, 0.02)',
+  border: 'rgba(0, 100, 255, 0.04)',
   getGlow: (dist: number) => {
-    if (dist === 0) return 'rgba(0, 122, 255, 0.22)';
+    if (dist === 0) return 'rgba(0, 122, 255, 0.42)';
     const intensity = Math.max(0, 1 - dist / (RADIUS + 1));
-    const alpha = (intensity * intensity * 0.18).toFixed(3);
+    const alpha = (intensity * intensity * 0.36).toFixed(3);
     return `rgba(0, 100, 255, ${alpha})`;
   },
   getBorder: (dist: number) => {
-    if (dist > RADIUS) return 'rgba(0, 100, 255, 0.02)';
+    if (dist > RADIUS) return 'rgba(0, 100, 255, 0.04)';
     const intensity = Math.max(0, 1 - dist / (RADIUS + 1));
-    const alpha = (0.02 + intensity * intensity * 0.2).toFixed(3);
+    const alpha = (0.04 + intensity * intensity * 0.38).toFixed(3);
     return `rgba(0, 100, 255, ${alpha})`;
   },
 };
 
 const lightTheme: ThemeColors = {
   base: 'transparent',
-  border: 'rgba(0, 80, 200, 0.03)',
+  border: 'rgba(0, 80, 200, 0.05)',
   getGlow: (dist: number) => {
-    if (dist === 0) return 'rgba(0, 122, 255, 0.12)';
+    if (dist === 0) return 'rgba(0, 122, 255, 0.26)';
     const intensity = Math.max(0, 1 - dist / (RADIUS + 1));
-    const alpha = (intensity * intensity * 0.09).toFixed(3);
+    const alpha = (intensity * intensity * 0.20).toFixed(3);
     return `rgba(0, 100, 255, ${alpha})`;
   },
   getBorder: (dist: number) => {
-    if (dist > RADIUS) return 'rgba(0, 80, 200, 0.03)';
+    if (dist > RADIUS) return 'rgba(0, 80, 200, 0.05)';
     const intensity = Math.max(0, 1 - dist / (RADIUS + 1));
-    const alpha = (0.03 + intensity * intensity * 0.12).toFixed(3);
+    const alpha = (0.05 + intensity * intensity * 0.24).toFixed(3);
     return `rgba(0, 100, 255, ${alpha})`;
   },
 };
