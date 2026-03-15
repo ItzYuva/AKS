@@ -5,9 +5,15 @@ import BlogsList from './BlogsList'
 export const dynamic = 'force-dynamic'
 
 export default async function BlogsPage() {
-  await connectDB()
-  const blogs = await Blog.find().sort({ createdAt: -1 }).lean()
-  const serializedBlogs = JSON.parse(JSON.stringify(blogs))
+  let serializedBlogs = []
+
+  try {
+    await connectDB()
+    const blogs = await Blog.find().sort({ createdAt: -1 }).lean()
+    serializedBlogs = JSON.parse(JSON.stringify(blogs))
+  } catch (error) {
+    console.error("Failed to fetch blogs:", error)
+  }
 
   return <BlogsList blogs={serializedBlogs} />
 }

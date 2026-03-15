@@ -9,15 +9,20 @@ import Blog from "@/models/Blog";
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  await connectDB();
-  const [projects, blogs] = await Promise.all([
-    Project.find().sort({ createdAt: -1 }).lean(),
-    Blog.find().sort({ createdAt: -1 }).lean(),
-  ]);
+  let serializedProjects = [];
+  let serializedBlogs = [];
 
-  // Serialize MongoDB documents to plain objects
-  const serializedProjects = JSON.parse(JSON.stringify(projects));
-  const serializedBlogs = JSON.parse(JSON.stringify(blogs));
+  try {
+    await connectDB();
+    const [projects, blogs] = await Promise.all([
+      Project.find().sort({ createdAt: -1 }).lean(),
+      Blog.find().sort({ createdAt: -1 }).lean(),
+    ]);
+    serializedProjects = JSON.parse(JSON.stringify(projects));
+    serializedBlogs = JSON.parse(JSON.stringify(blogs));
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+  }
 
   return (
     <main>
