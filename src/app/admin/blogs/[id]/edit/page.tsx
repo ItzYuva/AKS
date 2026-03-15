@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { FaArrowLeft, FaCloudUploadAlt } from 'react-icons/fa'
+import { FaArrowLeft, FaCloudUploadAlt, FaImage } from 'react-icons/fa'
 import Link from 'next/link'
 
 export default function EditBlog({ params }: { params: Promise<{ id: string }> }) {
@@ -11,8 +11,11 @@ export default function EditBlog({ params }: { params: Promise<{ id: string }> }
   const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const [uploadingInline, setUploadingInline] = useState(false)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const inlineImageInputRef = useRef<HTMLInputElement>(null)
+  const contentRef = useRef<HTMLTextAreaElement>(null)
   
   const [form, setForm] = useState({
     title: '',
@@ -70,6 +73,42 @@ export default function EditBlog({ params }: { params: Promise<{ id: string }> }
       setImagePreview(form.coverImage || null)
     } finally {
       setUploading(false)
+    }
+  }
+
+  const handleInlineImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploadingInline(true)
+    const formData = new FormData()
+    formData.append('file', file)
+
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData })
+      const data = await res.json()
+      if (res.ok) {
+        const textarea = contentRef.current
+        if (textarea) {
+          const cursorPos = textarea.selectionStart
+          const before = form.content.slice(0, cursorPos)
+          const after = form.content.slice(cursorPos)
+          const markdown = `\n![${file.name}](${data.url})\n`
+          setForm(prev => ({ ...prev, content: before + markdown + after }))
+          setTimeout(() => {
+            textarea.focus()
+            const newPos = cursorPos + markdown.length
+            textarea.setSelectionRange(newPos, newPos)
+          }, 0)
+        }
+      } else {
+        alert(data.error || 'Upload failed')
+      }
+    } catch {
+      alert('Upload failed')
+    } finally {
+      setUploadingInline(false)
+      if (inlineImageInputRef.current) inlineImageInputRef.current.value = ''
     }
   }
 
@@ -163,8 +202,28 @@ export default function EditBlog({ params }: { params: Promise<{ id: string }> }
         </div>
 
         <div>
-           <label className="block text-sm font-medium mb-2">Content (Markdown supported)</label>
-           <textarea name="content" value={form.content} onChange={handleChange} required rows={15} placeholder="Write your blog content in Markdown..."
+           <div className="flex items-center justify-between mb-2">
+             <label className="block text-sm font-medium">Content (Markdown supported)</label>
+             <div className="flex items-center gap-2">
+               <input
+                 ref={inlineImageInputRef}
+                 type="file"
+                 accept="image/*"
+                 onChange={handleInlineImageUpload}
+                 className="hidden"
+               />
+               <button
+                 type="button"
+                 onClick={() => inlineImageInputRef.current?.click()}
+                 disabled={uploadingInline}
+                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary hover:text-primary disabled:opacity-50 transition-colors"
+               >
+                 <FaImage className="h-3 w-3" />
+                 {uploadingInline ? 'Uploading...' : 'Insert Image'}
+               </button>
+             </div>
+           </div>
+           <textarea ref={contentRef} name="content" value={form.content} onChange={handleChange} required rows={15} placeholder="Write your blog content in Markdown...&#10;&#10;Tip: Click 'Insert Image' to add images anywhere in your content"
              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" />
         </div>
 
