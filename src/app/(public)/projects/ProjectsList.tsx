@@ -5,7 +5,16 @@ import Link from 'next/link'
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { fadeInUp, cardHoverSmall } from '@/utils/animations'
-import MasonryGrid from './MasonryGrid'
+import MasonryGrid from '@/app/components/MasonryGrid'
+
+const PLACEHOLDER_PATTERNS = ['demo.com', 'example.com', 'placeholder', '#', 'localhost']
+
+function getDemoHref(url: string): { href: string; external: boolean } {
+  if (!url || PLACEHOLDER_PATTERNS.some(p => url.toLowerCase().includes(p))) {
+    return { href: '/demo-unavailable', external: false }
+  }
+  return { href: url, external: true }
+}
 
 interface Project {
   _id: string
@@ -17,46 +26,51 @@ interface Project {
   image: string
 }
 
-const PLACEHOLDER_PATTERNS = ['demo.com', 'example.com', 'placeholder', '#', 'localhost']
-
-function getDemoHref(url: string): { href: string; external: boolean } {
-  if (!url || PLACEHOLDER_PATTERNS.some(p => url.toLowerCase().includes(p))) {
-    return { href: '/demo-unavailable', external: false }
-  }
-  return { href: url, external: true }
-}
-
-export default function Projects({ projects }: { projects: Project[] }) {
-
+export default function ProjectsList({ projects }: { projects: Project[] }) {
   return (
-    <section className="py-10 sm:py-20">
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6">
-        <motion.h2
-          className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-12 text-center"
-          {...fadeInUp}
-        >
-          Featured Projects
-        </motion.h2>
+    <div className="container max-w-7xl mx-auto py-12">
+      <motion.h1
+        className="text-4xl font-bold mb-4 text-center"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        My Projects
+      </motion.h1>
+      <motion.p
+        className="text-lg text-secondary mb-24 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        Here are some of my recent projects. Click on the links to view the code or live demo.
+      </motion.p>
 
-        <MasonryGrid>
-          {projects.slice(0, 6).map((project) => (
-            <motion.article
-              key={project._id}
-              className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md p-6 overflow-hidden"
-              variants={fadeInUp}
-              initial="initial"
-              animate="animate"
-              {...cardHoverSmall}
+      <MasonryGrid>
+        {projects.map((project) => (
+          <motion.div
+            key={project._id}
+            className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md overflow-hidden"
+            variants={fadeInUp}
+            initial="initial"
+            animate="animate"
+            {...cardHoverSmall}
+          >
+            <motion.div
+              className="aspect-video bg-gray-200 dark:bg-gray-800"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
-              <div className="relative aspect-video mb-4 rounded-lg overflow-hidden">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              </div>
+              <Image
+                src={project.image}
+                alt={project.title}
+                className="object-cover w-full h-full"
+                width={500}
+                height={500}
+              />
+            </motion.div>
+
+            <div className="p-6">
               <motion.h3
                 className="text-xl font-semibold mb-2"
                 whileHover={{ x: 5 }}
@@ -65,13 +79,14 @@ export default function Projects({ projects }: { projects: Project[] }) {
                 {project.title}
               </motion.h3>
               <motion.p
-                className="text-gray-600 dark:text-gray-300 mb-4 wrap-break-word"
+                className="text-secondary mb-4 wrap-break-word"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
                 {project.description}
               </motion.p>
+
               <motion.div
                 className="flex flex-wrap gap-2 mb-4"
                 initial={{ opacity: 0 }}
@@ -89,6 +104,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
                   </motion.span>
                 ))}
               </motion.div>
+
               <motion.div
                 className="flex gap-4"
                 initial={{ opacity: 0 }}
@@ -131,28 +147,10 @@ export default function Projects({ projects }: { projects: Project[] }) {
                   )
                 })()}
               </motion.div>
-            </motion.article>
-          ))}
-        </MasonryGrid>
-
-        {projects.length > 6 && (
-          <motion.div
-            className="flex justify-center mt-10"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                href="/projects"
-                className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors"
-              >
-                Show More
-              </Link>
-            </motion.div>
+            </div>
           </motion.div>
-        )}
-      </div>
-    </section>
+        ))}
+      </MasonryGrid>
+    </div>
   )
 }

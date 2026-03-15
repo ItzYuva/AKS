@@ -1,8 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { FaCalendarAlt, FaClock } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { fadeInUp, cardHoverSmall } from '@/utils/animations'
 import MasonryGrid from './MasonryGrid'
@@ -17,34 +15,7 @@ interface Blog {
   tags?: string[]
 }
 
-export default function Blogs() {
-  const [blogs, setBlogs] = useState<Blog[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetch('/api/blogs')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setBlogs(data)
-        } else {
-          console.error("API returned non-array data:", data)
-        }
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.error("Fetch failed", err)
-        setLoading(false)
-      })
-  }, [])
-
-  if (loading) return (
-    <section className="py-20">
-      <div className="container max-w-7xl mx-auto px-4 text-center text-secondary">
-        Loading blogs...
-      </div>
-    </section>
-  )
+export default function Blogs({ blogs }: { blogs: Blog[] }) {
 
   return (
     <section className="py-10 sm:py-20">
