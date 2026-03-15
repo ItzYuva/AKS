@@ -2,8 +2,9 @@
 
 import { useState, useEffect, use, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { FaArrowLeft, FaCloudUploadAlt, FaImage } from 'react-icons/fa'
+import { FaArrowLeft, FaCloudUploadAlt } from 'react-icons/fa'
 import Link from 'next/link'
+import MarkdownEditor from '../../MarkdownEditor'
 
 export default function EditBlog({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -202,29 +203,21 @@ export default function EditBlog({ params }: { params: Promise<{ id: string }> }
         </div>
 
         <div>
-           <div className="flex items-center justify-between mb-2">
-             <label className="block text-sm font-medium">Content (Markdown supported)</label>
-             <div className="flex items-center gap-2">
-               <input
-                 ref={inlineImageInputRef}
-                 type="file"
-                 accept="image/*"
-                 onChange={handleInlineImageUpload}
-                 className="hidden"
-               />
-               <button
-                 type="button"
-                 onClick={() => inlineImageInputRef.current?.click()}
-                 disabled={uploadingInline}
-                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary hover:text-primary disabled:opacity-50 transition-colors"
-               >
-                 <FaImage className="h-3 w-3" />
-                 {uploadingInline ? 'Uploading...' : 'Insert Image'}
-               </button>
-             </div>
-           </div>
-           <textarea ref={contentRef} name="content" value={form.content} onChange={handleChange} required rows={15} placeholder="Write your blog content in Markdown...&#10;&#10;Tip: Click 'Insert Image' to add images anywhere in your content"
-             className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" />
+           <label className="block text-sm font-medium mb-2">Content</label>
+           <input
+             ref={inlineImageInputRef}
+             type="file"
+             accept="image/*"
+             onChange={handleInlineImageUpload}
+             className="hidden"
+           />
+           <MarkdownEditor
+             value={form.content}
+             onChange={(val) => setForm(prev => ({ ...prev, content: val }))}
+             onImageInsert={() => inlineImageInputRef.current?.click()}
+             uploadingInline={uploadingInline}
+             textareaRef={contentRef}
+           />
         </div>
 
         <div>
