@@ -8,8 +8,6 @@ import DeleteConfirmModal from '../components/DeleteConfirmModal'
 interface Blog {
   _id: string
   title: string
-  date: string
-  readTime: string
   slug: string
 }
 
@@ -60,8 +58,6 @@ export default function AdminBlogs() {
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
                 <th className="text-left p-4 font-medium text-gray-500 dark:text-gray-400">Title</th>
-                <th className="text-left p-4 font-medium text-gray-500 dark:text-gray-400 hidden md:table-cell">Date</th>
-                <th className="text-left p-4 font-medium text-gray-500 dark:text-gray-400 hidden md:table-cell">Read Time</th>
                 <th className="text-right p-4 font-medium text-gray-500 dark:text-gray-400">Actions</th>
               </tr>
             </thead>
@@ -70,10 +66,7 @@ export default function AdminBlogs() {
                 <tr key={blog._id} className="border-b border-gray-100 dark:border-gray-800 last:border-0">
                   <td className="p-4">
                     <span className="font-medium">{blog.title}</span>
-                    <span className="block text-sm text-gray-500 md:hidden">{blog.date} &middot; {blog.readTime}</span>
                   </td>
-                  <td className="p-4 text-gray-500 hidden md:table-cell">{blog.date}</td>
-                  <td className="p-4 text-gray-500 hidden md:table-cell">{blog.readTime}</td>
                   <td className="p-4">
                     <div className="flex items-center justify-end gap-2">
                       <Link

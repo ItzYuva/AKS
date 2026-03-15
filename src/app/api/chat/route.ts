@@ -98,9 +98,7 @@ async function buildSystemPrompt(): Promise<string> {
   if (blogs?.length) {
     prompt += "\n**Blogs:**\n";
     blogs.forEach((b) => {
-      prompt += `- "${b.title}" (${b.date}, ${b.readTime}) — ${b.excerpt}`;
-      if (b.mediumUrl) prompt += ` | Link: ${b.mediumUrl}`;
-      prompt += "\n";
+      prompt += `- "${b.title}" — ${b.excerpt}\n`;
     });
   }
 

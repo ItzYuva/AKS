@@ -4,10 +4,10 @@ export interface IBlog {
   _id?: string
   title: string
   excerpt: string
-  date: string
-  readTime: string
   slug: string
-  mediumUrl: string
+  content: string
+  coverImage?: string
+  tags?: string[]
   createdAt?: Date
   updatedAt?: Date
 }
@@ -16,10 +16,10 @@ const BlogSchema = new Schema<IBlog>(
   {
     title: { type: String, required: true },
     excerpt: { type: String, required: true },
-    date: { type: String, required: true },
-    readTime: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
-    mediumUrl: { type: String, required: true },
+    content: { type: String, required: true },
+    coverImage: { type: String },
+    tags: { type: [String] },
   },
   { timestamps: true }
 )
