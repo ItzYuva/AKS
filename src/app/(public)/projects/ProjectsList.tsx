@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
 import { motion } from 'framer-motion'
-import { fadeInUp, cardHoverSmall } from '@/utils/animations'
+import { fadeInUp } from '@/utils/animations'
 import MasonryGrid from '@/app/components/MasonryGrid'
 
 const PLACEHOLDER_PATTERNS = ['demo.com', 'example.com', 'placeholder', '#', 'localhost']
@@ -50,17 +50,12 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
         {projects.map((project) => (
           <motion.div
             key={project._id}
-            className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md overflow-hidden"
+            className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
             variants={fadeInUp}
             initial="initial"
             animate="animate"
-            {...cardHoverSmall}
           >
-            <motion.div
-              className="aspect-video bg-gray-200 dark:bg-gray-800"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
+            <div className="aspect-video bg-gray-200 dark:bg-gray-800 overflow-hidden">
               <Image
                 src={project.image}
                 alt={project.title}
@@ -68,16 +63,12 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
                 width={500}
                 height={500}
               />
-            </motion.div>
+            </div>
 
             <div className="p-6">
-              <motion.h3
-                className="text-xl font-semibold mb-2"
-                whileHover={{ x: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
+              <h3 className="text-xl font-semibold mb-2">
                 {project.title}
-              </motion.h3>
+              </h3>
               <motion.p
                 className="text-secondary mb-4 wrap-break-word"
                 initial={{ opacity: 0 }}
@@ -94,14 +85,12 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
                 transition={{ delay: 0.3 }}
               >
                 {project.technologies.map((tech) => (
-                  <motion.span
+                  <span
                     key={tech}
                     className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
                   >
                     {tech}
-                  </motion.span>
+                  </span>
                 ))}
               </motion.div>
 
@@ -111,35 +100,31 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                <motion.a
+                <a
                   href={project.githubLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-secondary hover:text-primary transition-colors"
-                  whileHover={{ x: 5 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center gap-2 text-secondary hover:text-blue-500 transition-colors"
                 >
                   <FaGithub className="h-5 w-5" />
                   <span>Code</span>
-                </motion.a>
+                </a>
                 {(() => {
                   const { href, external } = getDemoHref(project.demoLink)
                   return external ? (
-                    <motion.a
+                    <a
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-secondary hover:text-primary transition-colors"
-                      whileHover={{ x: 5 }}
-                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 text-secondary hover:text-blue-500 transition-colors"
                     >
                       <FaExternalLinkAlt className="h-5 w-5" />
                       <span>Live Demo</span>
-                    </motion.a>
+                    </a>
                   ) : (
                     <Link
                       href={href}
-                      className="flex items-center gap-2 text-secondary hover:text-primary transition-colors"
+                      className="flex items-center gap-2 text-secondary hover:text-blue-500 transition-colors"
                     >
                       <FaExternalLinkAlt className="h-5 w-5" />
                       <span>Live Demo</span>

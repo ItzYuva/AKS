@@ -85,13 +85,12 @@ export default function Contact() {
                   className="flex items-center gap-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ x: 10 }}
                   transition={{ duration: 0.4 }}
                 >
                   <FaEnvelope className="h-6 w-6 text-[#007AFF]" />
                   <div>
                     <h3 className="font-semibold text-lg dark:text-white text-gray-900">Email</h3>
-                    <a href={`mailto:${contactInfo.email}`} className="dark:text-gray-400 text-gray-600 hover:text-[#007AFF] transition-colors">
+                    <a href={`mailto:${contactInfo.email}`} className="dark:text-gray-400 text-gray-600 hover:text-blue-500 transition-colors">
                       {contactInfo.email}
                     </a>
                   </div>
@@ -101,13 +100,12 @@ export default function Contact() {
                   className="flex items-center gap-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ x: 10 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
                 >
                   <FaPhone className="h-6 w-6 text-[#007AFF]" />
                   <div>
                     <h3 className="font-semibold text-lg dark:text-white text-gray-900">Phone</h3>
-                    <a href={`tel:${contactInfo.phone}`} className="dark:text-gray-400 text-gray-600 hover:text-[#007AFF] transition-colors">
+                    <a href={`tel:${contactInfo.phone}`} className="dark:text-gray-400 text-gray-600 hover:text-blue-500 transition-colors">
                       {contactInfo.phone}
                     </a>
                   </div>
@@ -117,7 +115,6 @@ export default function Contact() {
                   className="flex items-center gap-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ x: 10 }}
                   transition={{ duration: 0.4, delay: 0.2 }}
                 >
                   <FaMapMarkerAlt className="h-6 w-6 text-[#007AFF]" />
@@ -182,14 +179,12 @@ export default function Contact() {
               />
             </motion.div>
 
-            <motion.button
+            <button
               type="submit" disabled={status === 'loading'}
-              className="w-full btn btn-primary"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              className="w-full btn btn-primary hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
             >
               {status === 'loading' ? 'Sending...' : 'Send Message'}
-            </motion.button>
+            </button>
 
             {status === 'success' && (
               <motion.p className="text-[#007AFF] text-center" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>

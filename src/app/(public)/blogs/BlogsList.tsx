@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { fadeInUp, cardHoverSmall } from '@/utils/animations'
+import { fadeInUp } from '@/utils/animations'
 import MasonryGrid from '@/app/components/MasonryGrid'
 import Link from 'next/link'
 
@@ -31,21 +31,16 @@ export default function BlogsList({ blogs }: { blogs: Blog[] }) {
         {blogs.map((blog) => (
           <motion.article
             key={blog._id}
-            className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md overflow-hidden flex flex-col"
+            className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
             variants={fadeInUp}
             initial="initial"
             animate="animate"
-            {...cardHoverSmall}
           >
             <Link href={`/blogs/${blog.slug}`} className="flex flex-col flex-grow">
               <div className="p-6 flex flex-col flex-grow">
-                <motion.h2
-                  className="text-xl font-semibold mb-2 hover:text-primary transition-colors"
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
+                <h2 className="text-xl font-semibold mb-2 hover:text-blue-500 transition-colors">
                   {blog.title}
-                </motion.h2>
+                </h2>
 
                 <motion.p
                   className="text-secondary mb-4 wrap-break-word flex-grow"

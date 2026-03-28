@@ -40,33 +40,29 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
-            {<motion.button
+            <button
               onClick={toggleTheme}
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
             >
               {theme === 'dark' ? (
                 <SunIcon className="h-5 w-5" />
               ) : (
                 <MoonIcon className="h-5 w-5" />
               )}
-            </motion.button>}
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
-          <motion.button
+          <button
             className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             onClick={toggleMobileMenu}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
           >
             {isMobileMenuOpen ? (
               <XMarkIcon className="h-6 w-6" />
             ) : (
               <Bars3Icon className="h-6 w-6" />
             )}
-          </motion.button>
+          </button>
         </div>
 
         {/* Mobile Menu */}

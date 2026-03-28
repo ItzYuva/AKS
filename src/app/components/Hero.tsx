@@ -43,54 +43,40 @@ export default function Hero() {
             {...fadeInUp}
             transition={{ delay: 0.5 }}
           >
-            <motion.a
+            <a
               href="https://github.com/ItzYuva"
               target="_blank"
               rel="noopener noreferrer"
               className="text-2xl text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors"
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
             >
               <FaGithub />
-            </motion.a>
-            <motion.a
+            </a>
+            <a
               href="https://www.linkedin.com/in/adityakumarsinha110403/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-2xl text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors"
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
             >
               <FaLinkedin />
-            </motion.a>
+            </a>
           </motion.div>
           <motion.div
             className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0"
             {...fadeInUp}
             transition={{ delay: 0.6 }}
           >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <Link
+              href="/projects"
+              className="bg-primary inline-block w-full sm:w-auto text-white text-center px-8 py-3 rounded-lg hover:bg-primary/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
             >
-              <Link
-                href="/projects"
-                className="bg-primary inline-block w-full sm:w-auto text-white text-center px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors"
-              >
-                View Projects
-              </Link>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              View Projects
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-block w-full sm:w-auto bg-gray-500 text-center text-gray-800 dark:text-white px-8 py-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
             >
-              <Link
-                href="/contact"
-                className="inline-block w-full sm:w-auto bg-gray-500 text-center text-gray-800 dark:text-white px-8 py-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-              >
-                Contact Me
-              </Link>
-            </motion.div>
+              Contact Me
+            </Link>
           </motion.div>
         </div>
       </div>

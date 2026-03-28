@@ -25,13 +25,13 @@ export const staggerContainer = {
 }
 
 export const cardHover = {
-  whileHover: { scale: 1.05 },
-  transition: { type: "spring" as const, stiffness: 300 }
+  whileHover: {},
+  transition: { duration: 0.2 }
 }
 
 export const cardHoverSmall = {
-  whileHover: { scale: 1.02 },
-  transition: { type: "spring" as const, stiffness: 300 }
+  whileHover: {},
+  transition: { duration: 0.2 }
 }
 
 export const pageTransition = {

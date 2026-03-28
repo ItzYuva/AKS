@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { fadeInUp, cardHoverSmall } from '@/utils/animations'
+import { fadeInUp } from '@/utils/animations'
 import MasonryGrid from './MasonryGrid'
 
 interface Blog {
@@ -31,21 +31,16 @@ export default function Blogs({ blogs }: { blogs: Blog[] }) {
           {blogs.slice(0, 6).map((blog) => (
             <motion.article
               key={blog._id}
-              className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md overflow-hidden flex flex-col"
+              className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
               variants={fadeInUp}
               initial="initial"
               animate="animate"
-              {...cardHoverSmall}
             >
               <Link href={`/blogs/${blog.slug}`} className="flex flex-col flex-grow">
                 <div className="p-6 flex flex-col flex-grow">
-                  <motion.h3
-                    className="text-xl font-semibold mb-2 hover:text-primary transition-colors"
-                    whileHover={{ x: 5 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
+                  <h3 className="text-xl font-semibold mb-2 hover:text-blue-500 transition-colors">
                     {blog.title}
-                  </motion.h3>
+                  </h3>
                   <motion.p
                     className="text-gray-600 dark:text-gray-300 mb-4 wrap-break-word flex-grow"
                     initial={{ opacity: 0 }}
@@ -81,14 +76,12 @@ export default function Blogs({ blogs }: { blogs: Blog[] }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                href="/blogs"
-                className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors"
-              >
-                Show More
-              </Link>
-            </motion.div>
+            <Link
+              href="/blogs"
+              className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+            >
+              Show More
+            </Link>
           </motion.div>
         )}
       </div>

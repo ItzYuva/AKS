@@ -44,15 +44,13 @@ export default function DemoUnavailable() {
           {...fadeInUp}
           transition={{ delay: 0.5 }}
         >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              <FaArrowLeft className="w-4 h-4" />
-              Back to Projects
-            </Link>
-          </motion.div>
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <FaArrowLeft className="w-4 h-4" />
+            Back to Projects
+          </Link>
         </motion.div>
       </motion.div>
     </div>
