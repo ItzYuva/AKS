@@ -5,6 +5,8 @@ import About, { IAbout } from "@/models/About";
 import Project, { IProject } from "@/models/Project";
 import Blog, { IBlog } from "@/models/Blog";
 import Contact, { IContact } from "@/models/Contact";
+import ChatLog from "@/models/ChatLog";
+import { hashIp } from "@/lib/hashIp";
 
 // --- IP-based rate limiting ---
 const rateLimitMap = new Map<string, number[]>();
@@ -168,6 +170,9 @@ export async function POST(req: NextRequest) {
 
     const chat = model.startChat({ history });
     const lastMessage = recentMessages[recentMessages.length - 1].content;
+
+    // Log the question (fire-and-forget)
+    ChatLog.create({ question: lastMessage, ip: hashIp(ip) }).catch(() => {});
 
     const result = await chat.sendMessageStream(lastMessage);
 

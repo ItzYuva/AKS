@@ -15,10 +15,12 @@ import {
   FaMoon,
   FaBars,
   FaTimes,
+  FaChartBar,
 } from 'react-icons/fa'
 
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: FaHome },
+  { href: '/admin/analytics', label: 'Analytics', icon: FaChartBar },
   { href: '/admin/blogs', label: 'Blogs', icon: FaNewspaper },
   { href: '/admin/projects', label: 'Projects', icon: FaProjectDiagram },
   { href: '/admin/about', label: 'About', icon: FaUser },
