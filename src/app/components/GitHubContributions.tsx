@@ -140,7 +140,7 @@ export default function GitHubContributions() {
           {/* Contribution Activity header */}
           <motion.div className="flex items-center gap-3" {...fadeIn}>
             <FaCodeBranch className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold">Contribution Activity</h3>
+            <h3 className="text-lg font-semibold">Recent commits, pulled live from GitHub</h3>
           </motion.div>
 
           {/* Stat Cards */}

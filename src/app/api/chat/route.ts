@@ -8,10 +8,10 @@ import Contact, { IContact } from "@/models/Contact";
 import ChatLog from "@/models/ChatLog";
 import { hashIp } from "@/lib/hashIp";
 
-// --- IP-based rate limiting ---
+// --- IP-based rate limiting (per minute) ---
 const rateLimitMap = new Map<string, number[]>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const RATE_LIMIT_MAX = 10; // max requests per window
+const RATE_LIMIT_MAX = 10; // max requests per minute
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
@@ -21,6 +21,26 @@ function isRateLimited(ip: string): boolean {
   rateLimitMap.set(ip, recent);
   return recent.length > RATE_LIMIT_MAX;
 }
+
+// --- IP-based daily cap ---
+const dailyUsageMap = new Map<string, { count: number; date: string }>();
+const DAILY_LIMIT = 50;
+
+function isDailyLimitReached(ip: string): boolean {
+  const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+  const entry = dailyUsageMap.get(ip);
+  if (!entry || entry.date !== today) {
+    dailyUsageMap.set(ip, { count: 1, date: today });
+    return false;
+  }
+  if (entry.count >= DAILY_LIMIT) return true;
+  entry.count += 1;
+  return false;
+}
+
+// System prompt cache with 10-minute TTL
+let promptCache: { prompt: string; expiry: number } | null = null;
+const CACHE_TTL = 10 * 60 * 1000;
 
 const BASE_PROMPT = `You are Aditya Sinha's personal AI assistant embedded on his portfolio website. Your ONLY purpose is to answer questions about Aditya Sinha.
 
@@ -34,6 +54,11 @@ const BASE_PROMPT = `You are Aditya Sinha's personal AI assistant embedded on hi
 6. Keep all your responses concise and under 100 words.`;
 
 async function buildSystemPrompt(): Promise<string> {
+  const now = Date.now();
+  if (promptCache && now < promptCache.expiry) {
+    return promptCache.prompt;
+  }
+
   await connectDB();
 
   const [about, projects, blogs, contact] = await Promise.all([
@@ -104,6 +129,7 @@ async function buildSystemPrompt(): Promise<string> {
     });
   }
 
+  promptCache = { prompt, expiry: now + CACHE_TTL };
   return prompt;
 }
 
@@ -115,6 +141,13 @@ export async function POST(req: NextRequest) {
     if (isRateLimited(ip)) {
       return Response.json(
         { error: "Slow down! You're sending too many messages. Please wait a minute." },
+        { status: 429 }
+      );
+    }
+
+    if (isDailyLimitReached(ip)) {
+      return Response.json(
+        { error: "You've reached the daily limit of 50 messages. Come back tomorrow!" },
         { status: 429 }
       );
     }
@@ -160,8 +193,13 @@ export async function POST(req: NextRequest) {
         !(m.role === "assistant" && i === 0)
     );
 
-    // Only send the last 6 messages to limit token usage
-    const recentMessages = apiMessages.slice(-6);
+    // Only send the last 6 messages to limit token usage.
+    // If slicing cuts mid-pair, the first item may be an assistant message —
+    // Gemini rejects history that doesn't start with 'user', so drop it.
+    let recentMessages = apiMessages.slice(-6);
+    if (recentMessages[0]?.role === "assistant") {
+      recentMessages = recentMessages.slice(1);
+    }
 
     const history = recentMessages.slice(0, -1).map((m: { role: string; content: string }) => ({
       role: m.role === "assistant" ? "model" : "user",

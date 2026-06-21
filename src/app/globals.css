@@ -24,6 +24,30 @@ html, body {
   width: 100%;
 }
 
+/* Custom scrollbar — applies to page and chat widget */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #007AFF33 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #007AFF55;
+  border-radius: 9999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #007AFF;
+}
+
 a {
   transition: all 0.2s ease;
 }

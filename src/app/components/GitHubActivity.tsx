@@ -96,7 +96,7 @@ export default function GitHubActivity() {
                             </h2>
                             <div className="flex items-center justify-center gap-2 text-lg">
                                 <FaCodeBranch className="text-[#007AFF]" />
-                                <span className="dark:text-gray-300 text-gray-700 font-medium">Contribution Activity</span>
+                                <span className="dark:text-gray-300 text-gray-700 font-medium">Recent commits, pulled live from GitHub</span>
                             </div>
                         </div>
 
@@ -155,7 +155,7 @@ export default function GitHubActivity() {
                         </h2>
                         <div className="flex items-center justify-center gap-2 text-lg">
                             <FaCodeBranch className="text-[#007AFF]" />
-                            <span className="dark:text-gray-300 text-gray-700 font-medium">Contribution Activity</span>
+                            <span className="dark:text-gray-300 text-gray-700 font-medium">Recent commits, pulled live from GitHub</span>
                         </div>
                     </div>
 
