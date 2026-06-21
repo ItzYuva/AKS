@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -16,12 +17,26 @@ const SUGGESTED_QUESTIONS = [
   'What are his technical skills?',
 ];
 
+const FOLLOW_UP_POOL = [
+  'What technologies does he work with?',
+  'Tell me about his work experience',
+  'Does he write blogs?',
+  "What's his educational background?",
+  'How can I contact him?',
+  'Does he have a GitHub?',
+  'What is he currently working on?',
+  'What kind of AI projects has he built?',
+  'What are his strongest skills?',
+  'Has he done any internships?',
+];
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [suggestionIndex, setSuggestionIndex] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -71,14 +86,10 @@ export default function ChatWidget() {
       if (!res.ok) {
         const errorData = await res.json().catch(() => null);
         const errorMsg = errorData?.error || 'Failed to get response';
-        const isRateLimit = res.status === 429;
         setMessages((prev) => [
           ...prev,
           { role: 'assistant', content: errorMsg, isError: true },
         ]);
-        if (isRateLimit) {
-          // keep the rate limit message visually distinct
-        }
         setIsLoading(false);
         return;
       }
@@ -122,6 +133,9 @@ export default function ChatWidget() {
           }
         }
       }
+
+      // Advance to next pair of follow-up suggestions
+      setSuggestionIndex((prev) => (prev + 2) % FOLLOW_UP_POOL.length);
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -136,6 +150,19 @@ export default function ChatWidget() {
   };
 
   const hasMessages = messages.length > 0;
+  const userMessageCount = messages.filter((m) => m.role === 'user').length;
+  const isAtLimit = userMessageCount >= 50;
+  const lastMessage = messages[messages.length - 1];
+  const showFollowUps =
+    !isLoading &&
+    lastMessage?.role === 'assistant' &&
+    !lastMessage?.isError &&
+    lastMessage?.content.length > 0;
+
+  const followUps = [
+    FOLLOW_UP_POOL[suggestionIndex % FOLLOW_UP_POOL.length],
+    FOLLOW_UP_POOL[(suggestionIndex + 1) % FOLLOW_UP_POOL.length],
+  ];
 
   return (
     <>
@@ -200,6 +227,21 @@ export default function ChatWidget() {
                   <p className="text-gray-500 dark:text-gray-400 text-xs">Online</p>
                 </div>
               </div>
+              {hasMessages && (
+                <button
+                  onClick={() => { setMessages([]); setSuggestionIndex(0); }}
+                  className="text-gray-400 hover:text-red-400 transition-colors p-1"
+                  aria-label="Clear chat"
+                  title="Clear chat"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6M14 11v6" />
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                  </svg>
+                </button>
+              )}
               <button
                 onClick={() => setIsOpen(false)}
                 className="text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors p-1"
@@ -245,45 +287,47 @@ export default function ChatWidget() {
 
               {/* Chat messages */}
               {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
+                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'assistant' && (
                     <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 mr-2 mt-1">
-                      <Image
-                        src="/profile.avif"
-                        alt="Aditya"
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
+                      <Image src="/profile.avif" alt="Aditya" width={24} height={24} className="w-full h-full object-cover" />
                     </div>
                   )}
                   <div
-                    className={`max-w-[75%] px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap break-words ${
+                    className={`max-w-[75%] px-3.5 py-2.5 text-sm leading-relaxed wrap-break-word ${
                       msg.role === 'user'
-                        ? 'bg-primary text-white rounded-2xl rounded-br-md'
+                        ? 'bg-primary text-white rounded-2xl rounded-br-md whitespace-pre-wrap'
                         : msg.isError
                           ? 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-500/20 dark:text-amber-300 dark:border-amber-500/30 rounded-2xl rounded-bl-md'
                           : 'bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-gray-200 rounded-2xl rounded-bl-md'
                     }`}
                   >
-                    {msg.content}
+                    {msg.role === 'assistant' && !msg.isError ? (
+                      <ReactMarkdown
+                        components={{
+                          p: ({ children }) => <p className="mb-1 last:mb-0">{children}</p>,
+                          strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                          ul: ({ children }) => <ul className="list-disc pl-4 mb-1 space-y-0.5">{children}</ul>,
+                          ol: ({ children }) => <ol className="list-decimal pl-4 mb-1 space-y-0.5">{children}</ol>,
+                          li: ({ children }) => <li>{children}</li>,
+                          a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" className="underline opacity-80 hover:opacity-100">{children}</a>,
+                          code: ({ children }) => <code className="bg-black/10 dark:bg-white/10 px-1 py-0.5 rounded text-xs font-mono">{children}</code>,
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    ) : (
+                      msg.content
+                    )}
                   </div>
                 </div>
               ))}
 
+              {/* Typing indicator */}
               {isLoading && messages[messages.length - 1]?.role !== 'assistant' && (
                 <div className="flex justify-start">
                   <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 mr-2 mt-1">
-                    <Image
-                      src="/profile.avif"
-                      alt="Aditya"
-                      width={24}
-                      height={24}
-                      className="w-full h-full object-cover"
-                    />
+                    <Image src="/profile.avif" alt="Aditya" width={24} height={24} className="w-full h-full object-cover" />
                   </div>
                   <div className="bg-gray-100 dark:bg-white/10 text-gray-800 dark:text-gray-200 px-3.5 py-2.5 rounded-2xl rounded-bl-md">
                     <div className="flex gap-1.5 py-1">
@@ -295,44 +339,75 @@ export default function ChatWidget() {
                 </div>
               )}
 
+              {/* Follow-up suggestions after last AI reply */}
+              <AnimatePresence>
+                {showFollowUps && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex flex-wrap gap-2 pl-8"
+                  >
+                    {followUps.map((q) => (
+                      <button
+                        key={q}
+                        onClick={() => sendMessage(q)}
+                        className="text-xs text-primary border border-primary/30 hover:border-primary hover:bg-primary/5 px-3 py-1.5 rounded-full transition-all"
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <div ref={messagesEndRef} />
             </div>
 
             {/* Input */}
             <div className="p-3 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-transparent">
-              <div className="flex items-center gap-2 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-3 py-1.5 focus-within:border-primary/50 transition-colors">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      sendMessage();
-                    }
-                  }}
-                  maxLength={300}
-                  placeholder="Ask me anything..."
-                  disabled={isLoading}
-                  className="flex-1 bg-transparent text-gray-900 dark:text-white text-sm py-2 outline-none placeholder-gray-400 dark:placeholder-gray-500 disabled:opacity-50"
-                />
-                <button
-                  onClick={() => sendMessage()}
-                  disabled={isLoading || !input.trim()}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
-                  aria-label="Send message"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </button>
-              </div>
-              {input.length > 0 && (
-                <p className={`text-xs mt-1 text-right pr-1 ${input.length > 250 ? 'text-red-400' : 'text-gray-500'}`}>
-                  {input.length}/300
+              {isAtLimit ? (
+                <p className="text-xs text-center text-gray-400 dark:text-gray-500 py-2">
+                  You&apos;ve reached the daily limit of 50 messages. Come back tomorrow!
                 </p>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-3 py-1.5 focus-within:border-primary/50 transition-colors">
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          sendMessage();
+                        }
+                      }}
+                      maxLength={300}
+                      placeholder="Ask me anything..."
+                      disabled={isLoading}
+                      className="flex-1 bg-transparent text-gray-900 dark:text-white text-sm py-2 outline-none placeholder-gray-400 dark:placeholder-gray-500 disabled:opacity-50"
+                    />
+                    <button
+                      onClick={() => sendMessage()}
+                      disabled={isLoading || !input.trim()}
+                      className="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+                      aria-label="Send message"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                      </svg>
+                    </button>
+                  </div>
+                  {input.length > 0 && (
+                    <p className={`text-xs mt-1 text-right pr-1 ${input.length > 250 ? 'text-red-400' : 'text-gray-500'}`}>
+                      {input.length}/300
+                    </p>
+                  )}
+                </>
               )}
             </div>
           </motion.div>
