@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import connectDB from '@/lib/mongodb'
 import About from '@/models/About'
 
@@ -19,6 +20,7 @@ export async function PUT(request: NextRequest) {
     await connectDB()
     const body = await request.json()
     const about = await About.findOneAndUpdate({}, body, { new: true, upsert: true })
+    revalidatePath('/about')
     return NextResponse.json(about)
   } catch {
     return NextResponse.json({ error: 'Failed to update about info' }, { status: 500 })
