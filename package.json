@@ -7,11 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "npx tsx scripts/seed.ts"
+    "seed": "npx tsx scripts/seed.ts",
+    "migrate:images": "npx tsx scripts/migrate-images-to-blob.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@heroicons/react": "^2.2.0",
+    "@vercel/blob": "^2.5.0",
     "framer-motion": "^12.34.0",
     "mongodb": "^7.1.0",
     "mongoose": "^9.2.1",

@@ -1,6 +1,5 @@
 import { NextRequest } from 'next/server'
-import connectDB from '@/lib/mongodb'
-import Upload from '@/models/Upload'
+import { put } from '@vercel/blob'
 
 const MAX_SIZE = 5 * 1024 * 1024 // 5MB
 
@@ -21,18 +20,13 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: 'File too large. Max 5MB.' }, { status: 400 })
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer())
-    const base64 = buffer.toString('base64')
-
-    await connectDB()
-
-    const upload = await Upload.create({
-      data: base64,
-      contentType: file.type,
-      filename: file.name,
+    // Store as a real file on Vercel Blob (served from a CDN), not base64 in MongoDB.
+    const blob = await put(file.name, file, {
+      access: 'public',
+      addRandomSuffix: true,
     })
 
-    return Response.json({ url: `/api/uploads/${upload._id}` })
+    return Response.json({ url: blob.url })
   } catch (error) {
     console.error('Upload error:', error)
     return Response.json({ error: 'Upload failed' }, { status: 500 })

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import connectDB from '@/lib/mongodb'
 import Project from '@/models/Project'
 
@@ -27,6 +28,8 @@ export async function PUT(
     const body = await request.json()
     const project = await Project.findByIdAndUpdate(id, body, { new: true })
     if (!project) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    revalidatePath('/')
+    revalidatePath('/projects')
     return NextResponse.json(project)
   } catch {
     return NextResponse.json({ error: 'Failed to update project' }, { status: 500 })
@@ -42,6 +45,8 @@ export async function DELETE(
     await connectDB()
     const project = await Project.findByIdAndDelete(id)
     if (!project) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    revalidatePath('/')
+    revalidatePath('/projects')
     return NextResponse.json({ message: 'Deleted' })
   } catch {
     return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 })

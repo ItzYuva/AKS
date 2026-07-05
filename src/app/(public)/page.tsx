@@ -6,7 +6,9 @@ import connectDB from "@/lib/mongodb";
 import Project from "@/models/Project";
 import Blog from "@/models/Blog";
 
-export const dynamic = 'force-dynamic';
+// Statically render and refresh at most once an hour. Admin edits trigger
+// on-demand revalidation, so content still updates immediately after a change.
+export const revalidate = 3600;
 
 export default async function Home() {
   let serializedProjects = [];

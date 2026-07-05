@@ -2,7 +2,7 @@ import connectDB from '@/lib/mongodb'
 import Project from '@/models/Project'
 import ProjectsList from './ProjectsList'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export default async function ProjectsPage() {
   let serializedProjects = []

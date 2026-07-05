@@ -2,7 +2,7 @@ import connectDB from '@/lib/mongodb'
 import Blog from '@/models/Blog'
 import BlogsList from './BlogsList'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export default async function BlogsPage() {
   let serializedBlogs = []

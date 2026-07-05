@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import connectDB from '@/lib/mongodb'
 import Blog from '@/models/Blog'
 
@@ -27,6 +28,9 @@ export async function PUT(
     const body = await request.json()
     const blog = await Blog.findByIdAndUpdate(id, body, { new: true })
     if (!blog) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    revalidatePath('/')
+    revalidatePath('/blogs')
+    if (blog.slug) revalidatePath(`/blogs/${blog.slug}`)
     return NextResponse.json(blog)
   } catch {
     return NextResponse.json({ error: 'Failed to update blog' }, { status: 500 })
@@ -42,6 +46,9 @@ export async function DELETE(
     await connectDB()
     const blog = await Blog.findByIdAndDelete(id)
     if (!blog) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    revalidatePath('/')
+    revalidatePath('/blogs')
+    if (blog.slug) revalidatePath(`/blogs/${blog.slug}`)
     return NextResponse.json({ message: 'Deleted' })
   } catch {
     return NextResponse.json({ error: 'Failed to delete blog' }, { status: 500 })

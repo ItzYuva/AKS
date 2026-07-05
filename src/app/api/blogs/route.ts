@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import connectDB from '@/lib/mongodb'
 import Blog from '@/models/Blog'
 
@@ -21,6 +22,8 @@ export async function POST(request: NextRequest) {
     await connectDB()
     const body = await request.json()
     const blog = await Blog.create(body)
+    revalidatePath('/')
+    revalidatePath('/blogs')
     return NextResponse.json(blog, { status: 201 })
   } catch (error) {
     return NextResponse.json({ error: 'Failed to create blog' }, { status: 500 })

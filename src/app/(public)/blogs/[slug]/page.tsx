@@ -4,6 +4,8 @@ import Blog from '@/models/Blog'
 import BlogContent from './BlogContent'
 import React from 'react'
 
+export const revalidate = 3600
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   await connectDB()
