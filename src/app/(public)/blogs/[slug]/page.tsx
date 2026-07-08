@@ -6,6 +6,18 @@ import React from 'react'
 
 export const revalidate = 3600
 
+// Prerender every blog post at build time so opening any post is instant.
+// Posts added later still render on-demand and get cached (dynamicParams default).
+export async function generateStaticParams() {
+  try {
+    await connectDB()
+    const blogs = await Blog.find().select('slug').lean<{ slug: string }[]>()
+    return blogs.map((b) => ({ slug: b.slug }))
+  } catch {
+    return []
+  }
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   await connectDB()

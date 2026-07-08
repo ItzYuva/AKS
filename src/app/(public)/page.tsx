@@ -5,6 +5,7 @@ import Projects from "../components/Projects";
 import connectDB from "@/lib/mongodb";
 import Project from "@/models/Project";
 import Blog from "@/models/Blog";
+import { getGitHubActivity } from "@/lib/github";
 
 // Statically render and refresh at most once an hour. Admin edits trigger
 // on-demand revalidation, so content still updates immediately after a change.
@@ -13,6 +14,10 @@ export const revalidate = 3600;
 export default async function Home() {
   let serializedProjects = [];
   let serializedBlogs = [];
+
+  // Fetch DB content and (cached) GitHub activity in parallel so nothing
+  // blocks page load; both are baked into the cached HTML.
+  const githubPromise = getGitHubActivity();
 
   try {
     await connectDB();
@@ -26,12 +31,14 @@ export default async function Home() {
     console.error("Failed to fetch data:", error);
   }
 
+  const githubData = await githubPromise;
+
   return (
     <main>
       <Hero />
       <Projects projects={serializedProjects} />
       <Blogs blogs={serializedBlogs} />
-      <GitHubActivity />
+      <GitHubActivity data={githubData} />
     </main>
   );
 }
