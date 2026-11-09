@@ -10,4 +10,3 @@ Welcome to the official repository for my personal portfolio, designed and built
 - **Database:** [MongoDB](https://www.mongodb.com/) (Mongoose)
 - **Language:** TypeScript
 - **Integrations:** GitHub GraphQL API
-
