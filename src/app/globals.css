@@ -19,6 +19,23 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+html {
+  scroll-behavior: smooth;
+  --heatmap-0: #e4e4e7;
+  --heatmap-1: #a1a1aa;
+  --heatmap-2: #71717a;
+  --heatmap-3: #52525b;
+  --heatmap-4: #27272a;
+}
+
+html.dark {
+  --heatmap-0: #1c1c1f;
+  --heatmap-1: #2e2e33;
+  --heatmap-2: #46464c;
+  --heatmap-3: #6b6b73;
+  --heatmap-4: #a1a1aa;
+}
+
 html, body {
   overflow-x: hidden;
   width: 100%;
@@ -46,6 +63,14 @@ html, body {
 
 *::-webkit-scrollbar-thumb:hover {
   background: #007AFF;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 a {

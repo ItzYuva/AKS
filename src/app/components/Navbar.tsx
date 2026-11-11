@@ -22,7 +22,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed w-full bg-white/80 dark:bg-[#020B18]/80 backdrop-blur-sm z-50 border-b-2 border-blue-200 dark:border-blue-900/30">
+    <nav className="fixed w-full bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-sm z-50 border-b border-zinc-200 dark:border-white/5">
       <div className="container max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="text-xl font-bold text-primary">
