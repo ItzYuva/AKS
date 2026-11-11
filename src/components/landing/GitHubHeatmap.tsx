@@ -1,11 +1,23 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import type { HeatmapData, HeatmapWeek } from '@/lib/github-heatmap';
 
 const MONTHS = [
   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+];
+
+const CELL = 11;
+const GAP = 4;
+const STEP = CELL + GAP;
+
+const LEVEL_CLASSES = [
+  'fill-zinc-700/40 hover:opacity-80 cursor-pointer',
+  'fill-zinc-600/45 hover:opacity-80 cursor-pointer',
+  'fill-zinc-500/55 hover:opacity-80 cursor-pointer',
+  'fill-zinc-400/60 hover:opacity-80 cursor-pointer',
+  'fill-zinc-300/70 hover:opacity-80 cursor-pointer',
 ];
 
 function getLevel(count: number): number {
@@ -14,6 +26,11 @@ function getLevel(count: number): number {
   if (count <= 6) return 2;
   if (count <= 9) return 3;
   return 4;
+}
+
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr + 'T12:00:00Z');
+  return `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
 }
 
 function computeMonthLabels(weeks: HeatmapWeek[]) {
@@ -87,17 +104,24 @@ export default function GitHubHeatmap({ data }: { data: HeatmapData }) {
       ? startYear
       : `${startYear}–${endYear.slice(2)}`;
 
-  const cells: { date: string; count: number; weekday: number; col: number }[] = [];
-  weeks.forEach((week, wi) => {
-    for (let d = 0; d < 7; d++) {
-      const day = week.days.find((dd) => dd.weekday === d);
-      cells.push(
-        day
-          ? { ...day, col: wi }
-          : { date: '', count: -1, weekday: d, col: wi }
-      );
-    }
-  });
+  const gridOriginY = 16;
+  const svgWidth = cols * STEP - GAP;
+  const svgHeight = gridOriginY + 7 * STEP - GAP;
+
+  const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
+
+  const handleMouseEnter = useCallback((e: React.MouseEvent<SVGRectElement>, count: number, date: string) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const containerRect = containerRef.current?.getBoundingClientRect();
+    if (!containerRect) return;
+    setTooltip({
+      text: `${count} contribution${count !== 1 ? 's' : ''} on ${formatDate(date)}`,
+      x: rect.left + rect.width / 2 - containerRect.left,
+      y: rect.top - containerRect.top,
+    });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => setTooltip(null), []);
 
   return (
     <section className="pt-8 pb-8">
@@ -107,55 +131,70 @@ export default function GitHubHeatmap({ data }: { data: HeatmapData }) {
         </p>
       )}
 
-      <div ref={containerRef}>
-        {/* Month labels */}
-        <div
-          className="grid mb-1.5"
-          style={{
-            gridTemplateColumns: `repeat(${cols}, 1fr)`,
-            gap: '2px',
-          }}
-        >
-          {Array.from({ length: cols }, (_, i) => {
-            const m = monthLabels.find((ml) => ml.col === i);
-            return (
-              <span
-                key={i}
-                className="text-[10px] sm:text-[12px] uppercase tracking-wide text-zinc-500 dark:text-zinc-500 overflow-visible whitespace-nowrap"
-              >
-                {m ? m.label : ''}
-              </span>
-            );
-          })}
-        </div>
+      <div ref={containerRef} className="relative w-full">
+        {/* Tooltip */}
+        {tooltip && (
+          <div
+            className="absolute z-50 px-3 py-1.5 text-xs font-medium text-white bg-zinc-800 dark:bg-zinc-700 rounded-md whitespace-nowrap pointer-events-none shadow-lg"
+            style={{
+              left: tooltip.x,
+              top: tooltip.y,
+              transform: 'translate(-50%, -100%) translateY(-8px)',
+            }}
+          >
+            {tooltip.text}
+          </div>
+        )}
 
-        {/* Contribution grid — fits container width, no overflow */}
-        <div
-          className="grid"
-          style={{
-            gridTemplateRows: 'repeat(7, 1fr)',
-            gridTemplateColumns: `repeat(${cols}, 1fr)`,
-            gridAutoFlow: 'column',
-            gap: '2px',
-          }}
+        <svg
+          className="block w-full h-auto"
+          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+          role="img"
+          aria-label="GitHub contribution heatmap"
         >
-          {cells.map((cell, i) => {
-            if (cell.count < 0) {
-              return <div key={i} className="aspect-square" />;
-            }
-            const level = getLevel(cell.count);
-            return (
-              <div
-                key={i}
-                className="aspect-square rounded-[2px] sm:rounded-[3px]"
-                style={{
-                  backgroundColor: `var(--heatmap-${level})`,
-                }}
-                title={`${cell.count} contribution${cell.count !== 1 ? 's' : ''} on ${cell.date}`}
-              />
-            );
-          })}
-        </div>
+          {/* Month labels */}
+          {monthLabels.map((m, i) => (
+            <text
+              key={i}
+              x={m.col * STEP}
+              y={10}
+              className="fill-zinc-500 dark:fill-zinc-500"
+              fontSize="10"
+              fontFamily="inherit"
+              textAnchor="start"
+            >
+              {m.label.toUpperCase()}
+            </text>
+          ))}
+
+          {/* Contribution cells */}
+          {weeks.map((week, wi) =>
+            Array.from({ length: 7 }, (_, d) => {
+              const day = week.days.find((dd) => dd.weekday === d);
+              if (!day) return null;
+              const level = getLevel(day.count);
+              const x = wi * STEP;
+              const y = gridOriginY + d * STEP;
+              return (
+                <rect
+                  key={`${wi}-${d}`}
+                  x={x}
+                  y={y}
+                  width={CELL}
+                  height={CELL}
+                  rx={0}
+                  ry={0}
+                  className={LEVEL_CLASSES[level]}
+                  data-count={day.count}
+                  data-date={day.date}
+                  data-level={level}
+                  onMouseEnter={(e) => handleMouseEnter(e, day.count, day.date)}
+                  onMouseLeave={handleMouseLeave}
+                />
+              );
+            })
+          )}
+        </svg>
       </div>
 
       {/* Footer row */}
@@ -171,7 +210,7 @@ export default function GitHubHeatmap({ data }: { data: HeatmapData }) {
           {[0, 1, 2, 3, 4].map((lvl) => (
             <div
               key={lvl}
-              className="rounded-[2px] sm:rounded-[3px] w-2 h-2 sm:w-3 sm:h-3"
+              className="w-2.5 h-2.5 sm:w-3 sm:h-3"
               style={{
                 backgroundColor: `var(--heatmap-${lvl})`,
               }}
