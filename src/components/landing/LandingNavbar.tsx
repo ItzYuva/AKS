@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { label: 'Home', homeHref: '#', otherHref: '/' },
   { label: 'Projects', homeHref: '#projects', otherHref: '/projects' },
   { label: 'Blogs', homeHref: '#blogs', otherHref: '/blogs' },
-  { label: 'Contact', homeHref: '#contact', otherHref: '/contact' },
+  { label: 'Contact', homeHref: '#contact', otherHref: '/#contact' },
 ];
 
 export default function LandingNavbar() {

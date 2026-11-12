@@ -31,7 +31,7 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
       <h1 className="text-2xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">
         Projects
       </h1>
-      <p className="text-[15px] text-zinc-500 dark:text-zinc-400 mb-12 max-w-lg">
+      <p className="text-[15px] text-zinc-500 dark:text-zinc-400 mb-12">
         A collection of things I&apos;ve built. Click on the links to view the code or live demo.
       </p>
 

@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export async function GET() {
   try {
-    const res = await fetch('https://zenquotes.io/api/random');
+    const res = await fetch('https://zenquotes.io/api/random', {
+      next: { revalidate: 3600 },
+    });
 
     if (!res.ok) throw new Error('API error');
 

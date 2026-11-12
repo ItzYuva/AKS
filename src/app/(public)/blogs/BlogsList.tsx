@@ -18,7 +18,7 @@ export default function BlogsList({ blogs }: { blogs: Blog[] }) {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
       <h1 className="text-2xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">
-        Blog Posts
+        Blogs
       </h1>
       <p className="text-[15px] text-zinc-500 dark:text-zinc-400 mb-12 max-w-lg">
         Thoughts on engineering, AI, and things I&apos;ve learned along the way.
