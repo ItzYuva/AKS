@@ -16,6 +16,7 @@ import {
   FaBars,
   FaTimes,
   FaChartBar,
+  FaFilePdf,
 } from 'react-icons/fa'
 
 const navItems = [
@@ -25,6 +26,7 @@ const navItems = [
   { href: '/admin/projects', label: 'Projects', icon: FaProjectDiagram },
   { href: '/admin/about', label: 'About', icon: FaUser },
   { href: '/admin/contact', label: 'Contact', icon: FaEnvelope },
+  { href: '/admin/resume', label: 'Resume', icon: FaFilePdf },
 ]
 
 export default function AdminSidebar() {

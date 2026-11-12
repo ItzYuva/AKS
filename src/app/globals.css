@@ -19,15 +19,32 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+html {
+  scroll-behavior: smooth;
+  --heatmap-0: #e4e4e7;
+  --heatmap-1: #a1a1aa;
+  --heatmap-2: #71717a;
+  --heatmap-3: #52525b;
+  --heatmap-4: #27272a;
+}
+
+html.dark {
+  --heatmap-0: #1c1c1f;
+  --heatmap-1: #2e2e33;
+  --heatmap-2: #46464c;
+  --heatmap-3: #6b6b73;
+  --heatmap-4: #a1a1aa;
+}
+
 html, body {
   overflow-x: hidden;
   width: 100%;
 }
 
-/* Custom scrollbar — applies to page and chat widget */
+/* Scrollbar — zinc tones */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #007AFF33 transparent;
+  scrollbar-color: #a1a1aa33 transparent;
 }
 
 *::-webkit-scrollbar {
@@ -40,12 +57,20 @@ html, body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #007AFF55;
+  background: #a1a1aa44;
   border-radius: 9999px;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: #007AFF;
+  background: #a1a1aa;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 a {
@@ -56,23 +81,23 @@ a {
   .container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-  
+
   .btn {
     @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
   }
-  
+
   .btn-primary {
     @apply bg-primary text-white hover:bg-primary/90;
   }
-  
+
   .btn-secondary {
     @apply bg-secondary text-white hover:bg-secondary/90;
   }
-  
+
   .section-title {
     @apply text-3xl font-bold mb-8 text-center;
   }
-} 
+}
 
 @keyframes fadeIn {
   from {

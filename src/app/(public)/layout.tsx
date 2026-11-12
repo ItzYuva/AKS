@@ -1,6 +1,6 @@
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
 import PreLoader from '../components/PreLoader'
+import LandingNavbar from '@/components/landing/LandingNavbar'
+import LandingFooter from '@/components/landing/LandingFooter'
 
 export default function PublicLayout({
   children,
@@ -10,11 +10,11 @@ export default function PublicLayout({
   return (
     <>
       <PreLoader />
-      <Navbar />
-      <main className="min-h-screen pt-16 md:pt-24">
+      <LandingNavbar />
+      <main className="min-h-screen pt-16">
         {children}
       </main>
-      <Footer />
+      <LandingFooter />
     </>
   )
 }

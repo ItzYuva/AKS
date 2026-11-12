@@ -2,9 +2,8 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
-import { motion } from 'framer-motion'
-import { fadeInUp } from '@/utils/animations'
+import { FaGithub } from 'react-icons/fa'
+import { HiOutlineArrowUpRight } from 'react-icons/hi2'
 import MasonryGrid from '@/app/components/MasonryGrid'
 
 const PLACEHOLDER_PATTERNS = ['demo.com', 'example.com', 'placeholder', '#', 'localhost']
@@ -28,113 +27,87 @@ interface Project {
 
 export default function ProjectsList({ projects }: { projects: Project[] }) {
   return (
-    <div className="container max-w-7xl mx-auto py-12">
-      <motion.h1
-        className="text-4xl font-bold mb-4 text-center"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        My Projects
-      </motion.h1>
-      <motion.p
-        className="text-lg text-secondary mb-24 text-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        Here are some of my recent projects. Click on the links to view the code or live demo.
-      </motion.p>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+      <h1 className="text-2xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">
+        Projects
+      </h1>
+      <p className="text-[15px] text-zinc-500 dark:text-zinc-400 mb-12">
+        A collection of things I&apos;ve built. Click on the links to view the code or live demo.
+      </p>
 
       <MasonryGrid>
-        {projects.map((project) => (
-          <motion.div
-            key={project._id}
-            className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
-            variants={fadeInUp}
-            initial="initial"
-            animate="animate"
-          >
-            <div className="aspect-video bg-gray-200 dark:bg-gray-800 overflow-hidden">
-              <Image
-                src={project.image}
-                alt={project.title}
-                className="object-cover w-full h-full"
-                width={500}
-                height={500}
-              />
-            </div>
+        {projects.map((project) => {
+          const { href: demoHref, external } = getDemoHref(project.demoLink)
+          return (
+            <div
+              key={project._id}
+              className="rounded-2xl border border-zinc-200 dark:border-white/15 bg-white dark:bg-[#0c0c0e] overflow-hidden hover:border-zinc-300 dark:hover:border-white/25 transition-colors"
+            >
+              <div className="aspect-video bg-zinc-100 dark:bg-zinc-900 overflow-hidden">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  className="object-cover w-full h-full"
+                  width={500}
+                  height={300}
+                />
+              </div>
 
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2">
-                {project.title}
-              </h3>
-              <motion.p
-                className="text-secondary mb-4 wrap-break-word"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                {project.description}
-              </motion.p>
-
-              <motion.div
-                className="flex flex-wrap gap-2 mb-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </motion.div>
-
-              <motion.div
-                className="flex gap-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                <a
-                  href={project.githubLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-secondary hover:text-blue-500 transition-colors"
-                >
-                  <FaGithub className="h-5 w-5" />
-                  <span>Code</span>
-                </a>
-                {(() => {
-                  const { href, external } = getDemoHref(project.demoLink)
-                  return external ? (
+              <div className="p-5">
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <h3 className="font-medium text-zinc-900 dark:text-zinc-200 text-lg">
+                    {project.title}
+                  </h3>
+                  <div className="flex items-center gap-2 shrink-0">
                     <a
-                      href={href}
+                      href={project.githubLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-secondary hover:text-blue-500 transition-colors"
+                      className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                      aria-label={`${project.title} source code`}
                     >
-                      <FaExternalLinkAlt className="h-5 w-5" />
-                      <span>Live Demo</span>
+                      <FaGithub className="w-4 h-4" />
                     </a>
-                  ) : (
-                    <Link
-                      href={href}
-                      className="flex items-center gap-2 text-secondary hover:text-blue-500 transition-colors"
+                    {external ? (
+                      <a
+                        href={demoHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                        aria-label={`Visit ${project.title}`}
+                      >
+                        <HiOutlineArrowUpRight className="w-4 h-4" />
+                      </a>
+                    ) : (
+                      <Link
+                        href={demoHref}
+                        className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                        aria-label={`Visit ${project.title}`}
+                      >
+                        <HiOutlineArrowUpRight className="w-4 h-4" />
+                      </Link>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-[15px] text-zinc-500 dark:text-zinc-400 mb-4 wrap-break-word">
+                  {project.description}
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded"
                     >
-                      <FaExternalLinkAlt className="h-5 w-5" />
-                      <span>Live Demo</span>
-                    </Link>
-                  )
-                })()}
-              </motion.div>
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-          </motion.div>
-        ))}
+          )
+        })}
       </MasonryGrid>
     </div>
   )

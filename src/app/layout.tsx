@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   description: "Portfolio of Aditya Sinha — AI Engineer building intelligent systems. Explore my projects, blogs, and more.",
   keywords: ["AI Engineer", "Machine Learning", "Portfolio", "Aditya Sinha"],
   authors: [{ name: "Aditya Sinha" }],
+  twitter: {
+    card: "summary",
+    creator: "@AdityaSinha11",
+  },
 };
 
 export default function RootLayout({
@@ -29,8 +33,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-    <body className={`bg-white dark:bg-[#020B18] transition-colors dark:text-white ${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <body className={`${geistSans.className} bg-white dark:bg-[#09090b] transition-colors dark:text-white`}>
         <ThemeProvider>
           <GridBackground />
           <div className="relative z-10 overflow-x-hidden">
