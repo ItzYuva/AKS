@@ -12,12 +12,12 @@ const CELL = 11;
 const GAP = 4;
 const STEP = CELL + GAP;
 
-const LEVEL_CLASSES = [
-  'fill-zinc-700/40 hover:opacity-80 cursor-pointer',
-  'fill-zinc-600/45 hover:opacity-80 cursor-pointer',
-  'fill-zinc-500/55 hover:opacity-80 cursor-pointer',
-  'fill-zinc-400/60 hover:opacity-80 cursor-pointer',
-  'fill-zinc-300/70 hover:opacity-80 cursor-pointer',
+const LEVEL_FILLS = [
+  'var(--heatmap-0)',
+  'var(--heatmap-1)',
+  'var(--heatmap-2)',
+  'var(--heatmap-3)',
+  'var(--heatmap-4)',
 ];
 
 function getLevel(count: number): number {
@@ -184,7 +184,8 @@ export default function GitHubHeatmap({ data }: { data: HeatmapData }) {
                   height={CELL}
                   rx={0}
                   ry={0}
-                  className={LEVEL_CLASSES[level]}
+                  className="hover:opacity-80 cursor-pointer"
+                  fill={LEVEL_FILLS[level]}
                   data-count={day.count}
                   data-date={day.date}
                   data-level={level}

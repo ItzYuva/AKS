@@ -35,7 +35,7 @@ export default function SpotifyWidget() {
       <FaSpotify className="w-[18px] h-[18px] text-[#1DB954] shrink-0" />
       <span className="text-zinc-500 dark:text-zinc-500">Last played</span>
       <span className="mx-0.5 text-zinc-300 dark:text-zinc-600">&mdash;</span>
-      <span className="font-medium text-zinc-700 dark:text-zinc-200 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors truncate">
+      <span className="font-medium text-zinc-700 dark:text-zinc-200 group-hover:text-zinc-900 dark:group-hover:text-white group-hover:underline underline-offset-4 transition-colors truncate">
         {track.title}
       </span>
       <span className="text-zinc-400 dark:text-zinc-500 hidden sm:inline">

@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useTheme } from '@/app/context/ThemeContext';
 import SectionLabel from './SectionLabel';
 import { findTechIcon } from './techStackData';
@@ -24,13 +23,24 @@ const FALLBACK: ExperienceEntry[] = [
     title: 'Associate System Engineer',
     company: 'TCS',
     period: 'Nov 2025 – Present',
-    location: 'Mumbai',
+    location: 'Remote',
     type: 'Full-time',
     description: [
       'Ericsson client engagement in telecom and network intelligence domain',
       'Building and maintaining API test automation frameworks with Node.js and TypeScript',
     ],
     technologies: ['Node.js', 'TypeScript'],
+  },
+  {
+    title: 'Operations Intern',
+    company: 'TCS',
+    period: 'Mar 2025 – Oct 2025',
+    location: 'Remote',
+    type: 'Internship',
+    description: [
+      'Supported operational workflows and process automation initiatives',
+    ],
+    technologies: [],
   },
 ];
 
@@ -42,8 +52,19 @@ export default function Experience({ experience }: Props) {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
-  const entries: ExperienceEntry[] =
+  const raw: ExperienceEntry[] =
     experience && experience.length > 0 ? experience : FALLBACK;
+  const entries = [...raw]
+    .map((entry) => ({
+      ...entry,
+      location: entry.location || 'Remote',
+      type: entry.type || (/intern/i.test(entry.title) ? 'Internship' : 'Full-time'),
+    }))
+    .sort((a, b) => {
+      const aCurrent = /present/i.test(a.period) ? 1 : 0;
+      const bCurrent = /present/i.test(b.period) ? 1 : 0;
+      return bCurrent - aCurrent;
+    });
 
   return (
     <section className="py-8">
@@ -57,17 +78,9 @@ export default function Experience({ experience }: Props) {
           const current = isCurrent(entry.period);
 
           return (
-            <motion.div
+            <div
               key={`${entry.company}-${i}`}
               className="relative pb-10 last:pb-0"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                ease: 'easeOut',
-                delay: i * 0.1,
-              }}
             >
               {/* Dot */}
               <div className="absolute -left-7 sm:-left-8 top-1.5">
@@ -86,21 +99,21 @@ export default function Experience({ experience }: Props) {
 
               {/* Header */}
               <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5 sm:gap-4 mb-1">
-                <h3 className="text-base font-semibold text-zinc-900 dark:text-white">
+                <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-200">
                   {entry.title}
-                  <span className="font-normal text-zinc-400 dark:text-zinc-400">
+                  <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
                     {' '}
                     &middot; {entry.company}
                   </span>
                 </h3>
-                <span className="text-xs text-zinc-400 dark:text-zinc-500 font-mono whitespace-nowrap">
+                <span className="text-sm text-zinc-400 dark:text-zinc-500 font-mono whitespace-nowrap">
                   {entry.period}
                 </span>
               </div>
 
               {/* Location / Type */}
               {(entry.location || entry.type) && (
-                <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-2">
+                <p className="text-sm text-zinc-400 dark:text-zinc-500 mb-2">
                   {[entry.location, entry.type]
                     .filter(Boolean)
                     .join(', ')}
@@ -113,7 +126,7 @@ export default function Experience({ experience }: Props) {
                   {entry.description.map((line, j) => (
                     <li
                       key={j}
-                      className="flex items-start gap-2 text-[15px] text-zinc-600 dark:text-zinc-300"
+                      className="flex items-start gap-2 text-[15px] text-zinc-600 dark:text-zinc-400"
                     >
                       <span className="mt-2 w-1 h-1 rounded-full bg-zinc-400 dark:bg-zinc-600 shrink-0" />
                       {line}
@@ -153,7 +166,7 @@ export default function Experience({ experience }: Props) {
                   })}
                 </div>
               )}
-            </motion.div>
+            </div>
           );
         })}
       </div>

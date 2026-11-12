@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import SectionLabel from './SectionLabel';
 
 interface BlogEntry {
@@ -19,13 +18,7 @@ export default function BlogsPreview({ blogs }: { blogs: BlogEntry[] }) {
   return (
     <section className="py-8">
       <SectionLabel>Latest Blogs</SectionLabel>
-      <motion.div
-        className="space-y-1"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-      >
+      <div className="space-y-1">
         {recent.map((blog) => {
           const date = blog.createdAt
             ? new Date(blog.createdAt).toLocaleDateString('en-US', {
@@ -45,20 +38,21 @@ export default function BlogsPreview({ blogs }: { blogs: BlogEntry[] }) {
                 {blog.title}
               </span>
               {date && (
-                <span className="text-xs text-zinc-400 dark:text-zinc-500 font-mono whitespace-nowrap shrink-0">
+                <span className="text-sm text-zinc-400 dark:text-zinc-500 font-mono whitespace-nowrap shrink-0">
                   {date}
                 </span>
               )}
             </Link>
           );
         })}
-      </motion.div>
+      </div>
 
       <Link
         href="/blogs"
-        className="inline-block mt-4 text-sm text-primary hover:underline underline-offset-4"
+        className="group inline-flex items-center gap-1.5 mt-4 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
       >
-        View all posts
+        <span className="group-hover:underline underline-offset-4">More blogs</span>
+        <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">&rarr;</span>
       </Link>
     </section>
   );

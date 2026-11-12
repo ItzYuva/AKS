@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
-import { motion } from 'framer-motion';
 
 interface Quote {
   text: string;
@@ -65,12 +64,8 @@ export default function LandingFooter({
   return (
     <footer className="pt-8 pb-28 sm:pb-12">
       {/* Quote + visitor counter card */}
-      <motion.div
+      <div
         className="rounded-2xl border border-zinc-200 dark:border-white/15 bg-white dark:bg-[#0c0c0e] p-5 sm:p-6 mb-8"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
       >
         <div className="flex items-stretch gap-0">
           {/* Quote side */}
@@ -105,7 +100,7 @@ export default function LandingFooter({
             </div>
           )}
         </div>
-      </motion.div>
+      </div>
 
       {/* Divider */}
       <div className="h-px bg-zinc-200 dark:bg-white/5 mb-6" />
@@ -114,16 +109,16 @@ export default function LandingFooter({
       <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-4 text-center sm:text-left">
         {/* Left: copyright + nav links */}
         <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
-          <p className="text-xs text-zinc-400 dark:text-zinc-500">
+          <p className="text-[15px] text-zinc-400 dark:text-zinc-500">
             &copy; {new Date().getFullYear()} Aditya Sinha
           </p>
-          <nav className="flex items-center gap-4">
+          <nav className="flex items-center gap-5">
             {NAV_LINKS.map((link) =>
               link.href.startsWith('#') ? (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="text-xs text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                  className="text-[15px] text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
                 >
                   {link.label}
                 </a>
@@ -131,7 +126,7 @@ export default function LandingFooter({
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="text-xs text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                  className="text-[15px] text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -150,10 +145,10 @@ export default function LandingFooter({
                 href={s.href}
                 target={s.href.startsWith('mailto') ? undefined : '_blank'}
                 rel={s.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                className="group relative text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors p-1 min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
+                className="group relative text-zinc-400 dark:text-zinc-300 hover:text-zinc-700 dark:hover:text-white transition-colors p-1 min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
                 aria-label={s.label}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-[22px] h-[22px]" />
                 <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 text-xs font-medium text-white dark:text-zinc-100 bg-zinc-800 dark:bg-zinc-700 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-lg">
                   {s.label}
                 </span>

@@ -2,11 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { HiOutlineArrowUpRight } from 'react-icons/hi2';
-import { useTheme } from '@/app/context/ThemeContext';
 import SectionLabel from './SectionLabel';
-import { findTechIcon } from './techStackData';
 
 interface Project {
   _id: string;
@@ -42,9 +39,6 @@ export default function FeaturedProjects({
 }: {
   projects: Project[];
 }) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
-
   const FEATURED_TITLES = ['munshi', 'audio visualizer', 'audi visualizer'];
   let featured = projects.filter((p) =>
     FEATURED_TITLES.some((t) =>
@@ -61,17 +55,9 @@ export default function FeaturedProjects({
       <SectionLabel>Featured Projects</SectionLabel>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {featured.map((project, i) => (
-          <motion.article
+          <article
             key={project._id}
             className="group rounded-2xl border border-zinc-200 dark:border-white/15 bg-white dark:bg-[#0c0c0e] overflow-hidden hover:border-zinc-300 dark:hover:border-white/25 transition-colors"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 0.5,
-              ease: 'easeOut',
-              delay: i * 0.1,
-            }}
           >
             {/* Image */}
             <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
@@ -87,64 +73,46 @@ export default function FeaturedProjects({
             {/* Content */}
             <div className="p-5">
               <div className="flex items-start justify-between gap-3 mb-2">
-                <h3 className="font-semibold text-zinc-900 dark:text-white text-lg">
+                <h3 className="font-medium text-zinc-900 dark:text-zinc-200 text-lg">
                   {project.title}
                 </h3>
                 <a
                   href={getLiveUrl(project)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="shrink-0 p-1.5 rounded-lg text-zinc-400 hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
+                  className="shrink-0 text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
                   aria-label={`Visit ${project.title}`}
                 >
                   <HiOutlineArrowUpRight className="w-4 h-4" />
                 </a>
               </div>
 
-              <p className="text-[15px] text-zinc-500 dark:text-zinc-300 mb-4 line-clamp-2">
+              <p className="text-[15px] text-zinc-500 dark:text-zinc-400 mb-4 line-clamp-2">
                 {project.description}
               </p>
 
-              {/* Tech icons */}
-              <div className="flex flex-wrap gap-3">
-                {project.technologies.map((tech) => {
-                  const item = findTechIcon(tech);
-                  if (!item) {
-                    return (
-                      <span
-                        key={tech}
-                        className="text-[10px] font-mono text-zinc-500 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded"
-                      >
-                        {tech}
-                      </span>
-                    );
-                  }
-                  const Icon = item.icon;
-                  const color =
-                    isDark && item.darkColor
-                      ? item.darkColor
-                      : item.color;
-                  return (
-                    <div key={tech} title={item.name}>
-                      <Icon
-                        className="w-4 h-4"
-                        style={{ color }}
-                      />
-                    </div>
-                  );
-                })}
+              {/* Tech tags */}
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
-          </motion.article>
+          </article>
         ))}
       </div>
 
       <Link
         href="/projects"
-        className="inline-flex items-center gap-1 mt-6 text-sm text-primary hover:underline underline-offset-4"
+        className="group inline-flex items-center gap-1.5 mt-6 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
       >
-        View all projects
-        <HiOutlineArrowUpRight className="w-3.5 h-3.5" />
+        <span className="group-hover:underline underline-offset-4">More projects</span>
+        <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">&rarr;</span>
       </Link>
     </section>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import {
@@ -49,13 +49,9 @@ const TECH_KEYWORDS = [
   'Node.js',
   'React',
   'MongoDB',
-  'AI',
-  'LLM',
   'Tailwind CSS',
   'Docker',
   'Express',
-  'Machine Learning',
-  'NLP',
 ];
 
 function highlightTech(text: string): React.ReactNode[] {
@@ -76,18 +72,13 @@ function highlightTech(text: string): React.ReactNode[] {
   );
 }
 
-const fade = (delay = 0) => ({
-  initial: { opacity: 0, y: 20 } as const,
-  whileInView: { opacity: 1, y: 0 } as const,
-  viewport: { once: true } as const,
-  transition: { duration: 0.5, ease: 'easeOut' as const, delay },
-});
-
 const X_URL = 'https://x.com/AdityaSinha11';
+
+const TITLES = ['AI Engineer', 'ML Engineer', 'Backend Developer'];
 
 export default function HeroAbout({ about, contact }: Props) {
   const email = contact?.email || 'adityauv11@gmail.com';
-  const location = contact?.location || 'India';
+  const location = contact?.location || 'Mumbai, India';
   const githubUrl =
     contact?.githubUrl || 'https://github.com/ItzYuva';
   const linkedinUrl =
@@ -98,10 +89,30 @@ export default function HeroAbout({ about, contact }: Props) {
     about?.bio ||
     'I build AI-powered products end-to-end, from RAG pipelines and agents to the backends and interfaces around them. Currently working with TypeScript, Next.js, Node.js, and Python.';
 
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [phase, setPhase] = useState<'idle' | 'exit' | 'prep' | 'enter'>('idle');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhase('exit');
+      setTimeout(() => {
+        setTitleIndex((prev) => (prev + 1) % TITLES.length);
+        setPhase('prep');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setPhase('enter');
+            setTimeout(() => setPhase('idle'), 450);
+          });
+        });
+      }, 400);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section id="about" className="scroll-mt-16 pt-12 sm:pt-16 pb-4">
       {/* Avatar + Name */}
-      <motion.div className="flex items-center gap-4 sm:gap-5 mb-8" {...fade()}>
+      <div className="flex items-center gap-4 sm:gap-5 mb-8">
         <Image
           src="/profile.avif"
           alt="Aditya Sinha"
@@ -114,22 +125,31 @@ export default function HeroAbout({ about, contact }: Props) {
           <h1 className="text-3xl sm:text-4xl font-semibold text-zinc-900 dark:text-white tracking-tight">
             Aditya Sinha
           </h1>
-          <p className="text-zinc-500 dark:text-zinc-400 text-lg mt-0.5">
-            AI Engineer
-          </p>
+          <div className="h-7 mt-0.5 overflow-hidden">
+            <p
+              className="text-zinc-500 dark:text-zinc-400 text-base"
+              style={{
+                transition: phase === 'prep' ? 'none' : 'opacity 400ms cubic-bezier(0.4,0,0.2,1), transform 400ms cubic-bezier(0.4,0,0.2,1)',
+                opacity: phase === 'idle' || phase === 'enter' ? 1 : 0,
+                transform:
+                  phase === 'exit' ? 'translateY(-14px)'
+                    : phase === 'prep' ? 'translateY(14px)'
+                    : 'translateY(0)',
+              }}
+            >
+              {TITLES[titleIndex]}
+            </p>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Meta row — left-aligned inline flex */}
-      <motion.div
-        className="flex flex-wrap items-start gap-x-10 gap-y-4 mb-7"
-        {...fade(0.1)}
-      >
+      <div className="flex flex-wrap items-start gap-x-10 gap-y-4 mb-7">
         <div>
           <p className="text-[13px] uppercase tracking-[0.15em] font-medium text-zinc-400 dark:text-zinc-400 mb-1.5">
             Location
           </p>
-          <div className="flex items-center gap-1.5 text-[17px] font-medium text-zinc-700 dark:text-white">
+          <div className="flex items-center gap-1.5 text-[17px] font-medium text-zinc-700 dark:text-zinc-300">
             <HiOutlineMapPin className="w-[18px] h-[18px] text-zinc-400 shrink-0" />
             <span>{location}</span>
           </div>
@@ -141,7 +161,7 @@ export default function HeroAbout({ about, contact }: Props) {
           </p>
           <a
             href={`mailto:${email}`}
-            className="flex items-center gap-1.5 text-[17px] font-medium text-zinc-700 dark:text-white hover:text-primary transition-colors min-w-0"
+            className="flex items-center gap-1.5 text-[17px] font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:underline underline-offset-4 transition-colors min-w-0"
           >
             <HiOutlineEnvelope className="w-[18px] h-[18px] text-zinc-400 shrink-0" />
             <span className="truncate">{email}</span>
@@ -155,29 +175,26 @@ export default function HeroAbout({ about, contact }: Props) {
           <a
             href="/resume.pdf"
             download="Aditya_Sinha_Resume.pdf"
-            className="inline-flex items-center gap-1.5 text-[17px] font-medium text-zinc-700 dark:text-white hover:text-primary transition-colors"
+            className="inline-flex items-center gap-1.5 text-[17px] font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:underline underline-offset-4 transition-colors"
           >
             <HiOutlineArrowDownTray className="w-[18px] h-[18px] text-zinc-400 shrink-0" />
             <span>Download</span>
           </a>
         </div>
-      </motion.div>
+      </div>
 
       {/* Bio */}
-      <motion.p
-        className="text-zinc-600 dark:text-zinc-400 leading-[1.8] mb-6 max-w-2xl text-[17px]"
-        {...fade(0.15)}
-      >
+      <p className="text-zinc-600 dark:text-zinc-400 leading-[1.8] mb-6 max-w-2xl text-[17px]">
         {highlightTech(bio)}
-      </motion.p>
+      </p>
 
       {/* Spotify */}
-      <motion.div {...fade(0.18)}>
+      <div>
         <SpotifyWidget />
-      </motion.div>
+      </div>
 
       {/* Social icons */}
-      <motion.div className="flex items-center gap-5 mt-4" {...fade(0.2)}>
+      <div className="flex items-center gap-5 mt-4">
         {[
           { icon: FaXTwitter, href: X_URL, label: 'X (Twitter)', external: true },
           { icon: FaGithub, href: githubUrl, label: 'GitHub', external: true },
@@ -201,7 +218,7 @@ export default function HeroAbout({ about, contact }: Props) {
             </a>
           );
         })}
-      </motion.div>
+      </div>
     </section>
   );
 }

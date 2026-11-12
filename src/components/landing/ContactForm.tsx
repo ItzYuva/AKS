@@ -107,12 +107,6 @@ export default function ContactForm() {
       />
 
       <div>
-        <label
-          htmlFor="contact-name"
-          className="block text-sm text-zinc-500 dark:text-zinc-400 mb-1.5"
-        >
-          Full Name
-        </label>
         <input
           id="contact-name"
           type="text"
@@ -122,18 +116,12 @@ export default function ContactForm() {
           onChange={(e) =>
             setForm((f) => ({ ...f, name: e.target.value }))
           }
-          className="w-full h-11 px-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/10 text-base text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
-          placeholder="John Doe"
+          className="w-full h-11 px-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/10 text-base text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400 transition-colors"
+          placeholder="Full Name"
         />
       </div>
 
       <div>
-        <label
-          htmlFor="contact-email"
-          className="block text-sm text-zinc-500 dark:text-zinc-400 mb-1.5"
-        >
-          Email Address
-        </label>
         <input
           id="contact-email"
           type="email"
@@ -142,18 +130,12 @@ export default function ContactForm() {
           onChange={(e) =>
             setForm((f) => ({ ...f, email: e.target.value }))
           }
-          className="w-full h-11 px-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/10 text-base text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
-          placeholder="you@example.com"
+          className="w-full h-11 px-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/10 text-base text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400 transition-colors"
+          placeholder="Email Address"
         />
       </div>
 
       <div>
-        <label
-          htmlFor="contact-message"
-          className="block text-sm text-zinc-500 dark:text-zinc-400 mb-1.5"
-        >
-          Your Message
-        </label>
         <textarea
           id="contact-message"
           required
@@ -163,8 +145,8 @@ export default function ContactForm() {
           onChange={(e) =>
             setForm((f) => ({ ...f, message: e.target.value }))
           }
-          className="w-full px-3 py-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/10 text-base text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors resize-none"
-          placeholder="Tell me about your project..."
+          className="w-full px-3 py-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/10 text-base text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400 transition-colors resize-none"
+          placeholder="Your Message"
         />
       </div>
 
@@ -174,8 +156,8 @@ export default function ContactForm() {
 
       <button
         type="submit"
-        disabled={status === 'loading' || !isValid}
-        className="w-full h-11 rounded-lg bg-primary text-white font-medium flex items-center justify-center gap-2 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#09090b] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        disabled={status === 'loading'}
+        className="group w-full h-11 rounded-lg border border-zinc-300 dark:border-white/15 bg-transparent text-zinc-700 dark:text-zinc-100 font-medium flex items-center justify-center gap-2 hover:text-zinc-900 dark:hover:text-white focus:outline-none disabled:opacity-50 transition-colors cursor-pointer"
       >
         {status === 'loading' ? (
           <svg
@@ -200,7 +182,7 @@ export default function ContactForm() {
         ) : (
           <>
             Send Message
-            <HiOutlineArrowRight className="w-4 h-4" />
+            <HiOutlineArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
           </>
         )}
       </button>
