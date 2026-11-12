@@ -3,7 +3,6 @@ import Project from '@/models/Project';
 import Blog from '@/models/Blog';
 import About from '@/models/About';
 import Contact from '@/models/Contact';
-import PageView from '@/models/PageView';
 import { getGitHubHeatmap } from '@/lib/github-heatmap';
 
 import HeroAbout from '@/components/landing/HeroAbout';
@@ -67,17 +66,14 @@ export default async function LandingPage() {
   let contact: ContactDoc | null = null;
   let projects: ProjectDoc[] = [];
   let blogs: BlogDoc[] = [];
-  let visitorCount = 0;
-
   try {
     await connectDB();
-    const [aboutDoc, contactDoc, projectDocs, blogDocs, viewCount] =
+    const [aboutDoc, contactDoc, projectDocs, blogDocs] =
       await Promise.all([
         About.findOne().lean(),
         Contact.findOne().lean(),
         Project.find().sort({ createdAt: -1 }).lean(),
         Blog.find().sort({ createdAt: -1 }).lean(),
-        PageView.distinct('sessionId').then((ids: string[]) => ids.length),
       ]);
 
     about = aboutDoc
@@ -90,7 +86,6 @@ export default async function LandingPage() {
       JSON.stringify(projectDocs)
     ) as ProjectDoc[];
     blogs = JSON.parse(JSON.stringify(blogDocs)) as BlogDoc[];
-    visitorCount = viewCount;
   } catch (error) {
     console.error('Failed to fetch landing data:', error);
   }
@@ -109,7 +104,6 @@ export default async function LandingPage() {
       <BlogsPreview blogs={blogs} />
       <ContactSection contact={contact} />
       <LandingFooter
-        visitorCount={visitorCount}
         githubUrl={contact?.githubUrl}
         linkedinUrl={contact?.linkedinUrl}
         email={contact?.email}
