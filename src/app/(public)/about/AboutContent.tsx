@@ -1,15 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import {
-  fadeInUp,
-  fadeInDown,
-  fadeIn,
-  staggerContainer,
-  cardHover,
-  cardHoverSmall
-} from '@/utils/animations'
-
 interface Skill { name: string; level: string }
 interface Experience { title: string; company: string; period: string; description: string[] }
 interface Education { degree: string; institution: string; period: string; description: string }
@@ -24,137 +14,105 @@ export interface AboutData {
 
 export default function AboutContent({ about }: { about: AboutData | null }) {
   if (!about) return (
-    <div className="container max-w-7xl mx-auto py-12 text-center text-secondary">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16 text-center text-zinc-500 dark:text-zinc-400">
       About information not available.
     </div>
   )
 
   return (
-    <div className="container max-w-7xl mx-auto py-12">
-      <motion.h1
-        className="text-4xl font-bold mb-8 text-center"
-        {...fadeInDown}
-      >
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16">
+      <h1 className="text-2xl font-medium text-zinc-900 dark:text-zinc-100 mb-6">
         About Me
-      </motion.h1>
+      </h1>
 
-      {/* Bio Section */}
-      <motion.section
-        className="mb-16"
-        {...fadeInUp}
-      >
-        <p className="text-lg text-secondary max-w-3xl mx-auto text-center">
-          {about.bio}
-        </p>
-      </motion.section>
+      {/* Bio */}
+      <p className="text-[15px] text-zinc-600 dark:text-zinc-400 leading-[1.8] mb-14 max-w-xl">
+        {about.bio}
+      </p>
 
-      {/* Skills Section */}
+      {/* Skills */}
       {about.skills.length > 0 && (
-        <motion.section
-          className="mb-16"
-          {...fadeIn}
-          transition={{ delay: 0.2 }}
-        >
-          <motion.h2
-            className="section-title"
-            {...fadeInUp}
-          >
+        <section className="mb-14">
+          <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-200 mb-5">
             Skills
-          </motion.h2>
-          <motion.div
-            className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={staggerContainer}
-            initial="initial"
-            animate="animate"
-          >
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {about.skills.map((skill, i) => (
-              <motion.div
+              <div
                 key={i}
-                className="bg-white/80 dark:bg-dark/50 p-6 rounded-lg shadow-md"
-                variants={fadeInUp}
-                {...cardHover}
+                className="rounded-xl border border-zinc-200 dark:border-white/15 bg-white dark:bg-[#0c0c0e] p-4"
               >
-                <h3 className="text-xl font-semibold mb-2">{skill.name}</h3>
-                <p className="text-secondary">{skill.level}</p>
-              </motion.div>
+                <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-200 mb-1">{skill.name}</h3>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400">{skill.level}</p>
+              </div>
             ))}
-          </motion.div>
-        </motion.section>
+          </div>
+        </section>
       )}
 
-      {/* Experience Section */}
+      {/* Experience */}
       {about.experience.length > 0 && (
-        <motion.section
-          className="mb-16"
-          {...fadeIn}
-          transition={{ delay: 0.4 }}
-        >
-          <motion.h2
-            className="section-title"
-            {...fadeInUp}
-          >
+        <section className="mb-14">
+          <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-200 mb-5">
             Experience
-          </motion.h2>
-          <motion.div
-            className="max-w-3xl mx-auto space-y-8"
-            variants={staggerContainer}
-            initial="initial"
-            animate="animate"
-          >
+          </h2>
+          <div className="space-y-6">
             {about.experience.map((exp, i) => (
-              <motion.div
+              <div
                 key={i}
-                className="bg-white/80 dark:bg-dark/50 p-6 rounded-lg shadow-md"
-                variants={fadeInUp}
-                {...cardHoverSmall}
+                className="rounded-xl border border-zinc-200 dark:border-white/15 bg-white dark:bg-[#0c0c0e] p-5"
               >
-                <h3 className="text-xl font-semibold mb-2">{exp.title}</h3>
-                <p className="text-primary mb-2">{exp.company} &bull; {exp.period}</p>
+                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
+                  <h3 className="text-base font-medium text-zinc-900 dark:text-zinc-200">
+                    {exp.title}
+                    <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400"> &middot; {exp.company}</span>
+                  </h3>
+                  <span className="text-sm text-zinc-400 dark:text-zinc-500 font-mono whitespace-nowrap">
+                    {exp.period}
+                  </span>
+                </div>
                 {exp.description.length > 0 && (
-                  <ul className="text-secondary list-disc list-inside space-y-2">
+                  <ul className="space-y-1.5 mt-2">
                     {exp.description.map((desc, j) => (
-                      <li key={j}>{desc}</li>
+                      <li key={j} className="flex items-start gap-2 text-[15px] text-zinc-600 dark:text-zinc-400">
+                        <span className="mt-2 w-1 h-1 rounded-full bg-zinc-400 dark:bg-zinc-600 shrink-0" />
+                        {desc}
+                      </li>
                     ))}
                   </ul>
                 )}
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
-        </motion.section>
+          </div>
+        </section>
       )}
 
-      {/* Education Section */}
+      {/* Education */}
       {about.education.length > 0 && (
-        <motion.section
-          {...fadeIn}
-          transition={{ delay: 0.6 }}
-        >
-          <motion.h2
-            className="section-title"
-            {...fadeInUp}
-          >
+        <section>
+          <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-200 mb-5">
             Education
-          </motion.h2>
-          <motion.div
-            className="max-w-3xl mx-auto"
-            variants={staggerContainer}
-            initial="initial"
-            animate="animate"
-          >
+          </h2>
+          <div className="space-y-4">
             {about.education.map((edu, i) => (
-              <motion.div
+              <div
                 key={i}
-                className={`bg-white/80 dark:bg-dark/50 p-6 rounded-lg shadow-md${i > 0 ? ' mt-8' : ''}`}
-                variants={fadeInUp}
-                {...cardHoverSmall}
+                className="rounded-xl border border-zinc-200 dark:border-white/15 bg-white dark:bg-[#0c0c0e] p-5"
               >
-                <h3 className="text-xl font-semibold mb-2">{edu.degree}</h3>
-                <p className="text-primary mb-2">{edu.institution} &bull; {edu.period}</p>
-                <p className="text-secondary">{edu.description}</p>
-              </motion.div>
+                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
+                  <h3 className="text-base font-medium text-zinc-900 dark:text-zinc-200">
+                    {edu.degree}
+                    <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400"> &middot; {edu.institution}</span>
+                  </h3>
+                  <span className="text-sm text-zinc-400 dark:text-zinc-500 font-mono whitespace-nowrap">
+                    {edu.period}
+                  </span>
+                </div>
+                <p className="text-[15px] text-zinc-600 dark:text-zinc-400 mt-1">{edu.description}</p>
+              </div>
             ))}
-          </motion.div>
-        </motion.section>
+          </div>
+        </section>
       )}
     </div>
   )

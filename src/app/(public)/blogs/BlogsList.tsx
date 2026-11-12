@@ -1,7 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { fadeInUp } from '@/utils/animations'
 import MasonryGrid from '@/app/components/MasonryGrid'
 import Link from 'next/link'
 
@@ -13,62 +11,68 @@ interface Blog {
   mediumUrl?: string
   coverImage?: string
   tags?: string[]
+  createdAt?: string
 }
 
 export default function BlogsList({ blogs }: { blogs: Blog[] }) {
   return (
-    <div className="container max-w-7xl mx-auto py-12">
-      <motion.h1
-        className="text-4xl font-bold mb-8 text-center"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+      <h1 className="text-2xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">
         Blog Posts
-      </motion.h1>
+      </h1>
+      <p className="text-[15px] text-zinc-500 dark:text-zinc-400 mb-12 max-w-lg">
+        Thoughts on engineering, AI, and things I&apos;ve learned along the way.
+      </p>
 
       <MasonryGrid>
-        {blogs.map((blog) => (
-          <motion.article
-            key={blog._id}
-            className="bg-white/80 dark:bg-dark/50 rounded-lg shadow-md overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
-            variants={fadeInUp}
-            initial="initial"
-            animate="animate"
-          >
-            <Link href={`/blogs/${blog.slug}`} className="flex flex-col flex-grow">
-              <div className="p-6 flex flex-col flex-grow">
-                <h2 className="text-xl font-semibold mb-2 hover:text-blue-500 transition-colors">
-                  {blog.title}
-                </h2>
+        {blogs.map((blog) => {
+          const date = blog.createdAt
+            ? new Date(blog.createdAt).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })
+            : null
 
-                <motion.p
-                  className="text-secondary mb-4 wrap-break-word flex-grow"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
+          return (
+            <Link
+              key={blog._id}
+              href={`/blogs/${blog.slug}`}
+              className="block rounded-2xl border border-zinc-200 dark:border-white/15 bg-white dark:bg-[#0c0c0e] overflow-hidden hover:border-zinc-300 dark:hover:border-white/25 transition-colors group"
+            >
+              <div className="p-5 flex flex-col">
+                <div className="flex items-baseline justify-between gap-3 mb-2">
+                  <h2 className="font-medium text-zinc-900 dark:text-zinc-200 text-lg group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
+                    {blog.title}
+                  </h2>
+                </div>
+
+                {date && (
+                  <span className="text-sm text-zinc-400 dark:text-zinc-500 font-mono mb-3">
+                    {date}
+                  </span>
+                )}
+
+                <p className="text-[15px] text-zinc-500 dark:text-zinc-400 mb-4 wrap-break-word">
                   {blog.excerpt}
-                </motion.p>
+                </p>
 
                 {blog.tags && blog.tags.length > 0 && (
-                  <motion.div
-                    className="flex flex-wrap gap-2 mt-auto pt-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                  >
+                  <div className="flex flex-wrap gap-2 mt-auto">
                     {blog.tags.map((tag, index) => (
-                      <span key={index} className="px-3 py-1 bg-primary/10 text-primary dark:bg-primary/20 rounded-full text-xs font-semibold">
+                      <span
+                        key={index}
+                        className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded"
+                      >
                         {tag}
                       </span>
                     ))}
-                  </motion.div>
+                  </div>
                 )}
               </div>
             </Link>
-          </motion.article>
-        ))}
+          )
+        })}
       </MasonryGrid>
     </div>
   )

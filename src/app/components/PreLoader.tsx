@@ -1,74 +1,29 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 export default function PreLoader() {
-    const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 1200);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFadeOut(true);
+      setTimeout(() => setIsLoading(false), 500);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
-        return () => clearTimeout(timer);
-    }, []);
+  if (!isLoading) return null;
 
-    return (
-        <AnimatePresence>
-            {isLoading && (
-                <motion.div
-                    initial={{ opacity: 1 }}
-                    exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
-                    className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white dark:bg-[#09090b]"
-                >
-                    <div className="relative flex items-center justify-center">
-                        <motion.div
-                            animate={{
-                                scale: [1, 1.2, 1],
-                                opacity: [0.5, 1, 0.5]
-                            }}
-                            transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                ease: "easeInOut"
-                            }}
-                            className="absolute w-24 h-24 rounded-full bg-[#007AFF]/20 blur-xl"
-                        />
-
-                        <svg width="64" height="64" viewBox="0 0 100 100" className="relative z-10">
-                            <motion.path
-                                d="M50 10 L90 30 L90 70 L50 90 L10 70 L10 30 Z"
-                                fill="transparent"
-                                stroke="#007AFF"
-                                strokeWidth="4"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                initial={{ pathLength: 0 }}
-                                animate={{ pathLength: 1 }}
-                                transition={{
-                                    duration: 1.5,
-                                    ease: "easeInOut",
-                                    repeat: Infinity,
-                                    repeatType: "loop",
-                                }}
-                            />
-                            <motion.text
-                                x="50"
-                                y="58"
-                                textAnchor="middle"
-                                className="fill-gray-900 dark:fill-white font-bold"
-                                style={{ fontSize: '24px' }}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.5, delay: 0.5 }}
-                            >
-                                A
-                            </motion.text>
-                        </svg>
-                    </div>
-                </motion.div>
-            )}
-        </AnimatePresence>
-    );
+  return (
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-white dark:bg-[#09090b] transition-opacity duration-500"
+      style={{ opacity: fadeOut ? 0 : 1 }}
+    >
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-8 h-8 border-2 border-zinc-200 dark:border-zinc-700 border-t-zinc-500 dark:border-t-zinc-400 rounded-full animate-spin" />
+      </div>
+    </div>
+  );
 }
