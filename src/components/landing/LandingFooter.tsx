@@ -12,7 +12,6 @@ interface Quote {
 }
 
 interface Props {
-  visitorCount?: number;
   githubUrl?: string;
   linkedinUrl?: string;
   email?: string;
@@ -39,19 +38,26 @@ const NAV_LINKS = [
 ];
 
 export default function LandingFooter({
-  visitorCount = 0,
   githubUrl = 'https://github.com/ItzYuva',
   linkedinUrl = 'https://www.linkedin.com/in/adityakumarsinha110403/',
   email = 'adityauv11@gmail.com',
 }: Props) {
   const pathname = usePathname();
   const isHome = pathname === '/';
+  const [visitorCount, setVisitorCount] = useState(0);
   const [quote, setQuote] = useState<Quote>({
     text: 'Talk is cheap. Show me the code.',
     author: 'Linus Torvalds',
   });
 
   useEffect(() => {
+    fetch('/api/analytics/visitors')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.count) setVisitorCount(data.count);
+      })
+      .catch(() => {});
+
     fetch('/api/quote')
       .then((r) => r.json())
       .then((data) => {
@@ -72,7 +78,7 @@ export default function LandingFooter({
       <div className="max-w-4xl mx-auto px-5 md:px-6">
         {/* Quote + visitor counter card */}
         <div className="rounded-2xl border border-zinc-200 dark:border-white/15 bg-white dark:bg-[#0c0c0e] p-5 sm:p-6 mb-8">
-          <div className="flex items-stretch gap-0">
+          <div className="flex flex-col sm:flex-row sm:items-stretch gap-0">
             {/* Quote side */}
             <div className="flex-1 min-w-0">
               <div className="flex items-start gap-2.5 mb-2">
@@ -88,19 +94,24 @@ export default function LandingFooter({
 
             {/* Divider + visitor counter */}
             {visitorCount > 0 && (
-              <div className="flex items-center">
-                <div className="w-px h-full bg-zinc-200 dark:bg-white/10 mx-5 sm:mx-6" />
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
-                  You are the{' '}
-                  <span className="font-bold text-zinc-800 dark:text-white text-base">
-                    {visitorCount.toLocaleString()}
-                  </span>
-                  <sup className="text-[10px] font-semibold text-zinc-800 dark:text-white">
-                    {ordinalSuffix(visitorCount)}
-                  </sup>
-                  {' '}visitor
-                </p>
-              </div>
+              <>
+                <div className="h-px w-full bg-zinc-200 dark:bg-white/10 my-4 sm:hidden" />
+                <div className="hidden sm:flex items-center">
+                  <div className="w-px h-full bg-zinc-200 dark:bg-white/10 mx-5 sm:mx-6" />
+                </div>
+                <div className="flex justify-center sm:justify-start items-center">
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+                    You are the{' '}
+                    <span className="font-bold text-zinc-800 dark:text-white text-base">
+                      {visitorCount.toLocaleString()}
+                    </span>
+                    <sup className="text-[10px] font-semibold text-zinc-800 dark:text-white">
+                      {ordinalSuffix(visitorCount)}
+                    </sup>
+                    {' '}visitor
+                  </p>
+                </div>
+              </>
             )}
           </div>
         </div>
