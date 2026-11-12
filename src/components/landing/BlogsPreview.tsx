@@ -16,7 +16,7 @@ export default function BlogsPreview({ blogs }: { blogs: BlogEntry[] }) {
   if (recent.length === 0) return null;
 
   return (
-    <section className="py-8">
+    <section id="blogs" className="scroll-mt-16 py-8">
       <SectionLabel>Latest Blogs</SectionLabel>
       <div className="space-y-1">
         {recent.map((blog) => {

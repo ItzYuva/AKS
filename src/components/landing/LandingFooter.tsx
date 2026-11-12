@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
@@ -11,7 +12,7 @@ interface Quote {
 }
 
 interface Props {
-  visitorCount: number;
+  visitorCount?: number;
   githubUrl?: string;
   linkedinUrl?: string;
   email?: string;
@@ -33,16 +34,18 @@ function ordinalSuffix(n: number): string {
 const NAV_LINKS = [
   { label: 'About', href: '#about' },
   { label: 'Projects', href: '#projects' },
-  { label: 'Blogs', href: '/blogs' },
+  { label: 'Blogs', href: '#blogs' },
   { label: 'Contact', href: '#contact' },
 ];
 
 export default function LandingFooter({
-  visitorCount,
+  visitorCount = 0,
   githubUrl = 'https://github.com/ItzYuva',
   linkedinUrl = 'https://www.linkedin.com/in/adityakumarsinha110403/',
   email = 'adityauv11@gmail.com',
 }: Props) {
+  const pathname = usePathname();
+  const isHome = pathname === '/';
   const [quote, setQuote] = useState<Quote | null>(null);
 
   useEffect(() => {
@@ -113,11 +116,12 @@ export default function LandingFooter({
             &copy; {new Date().getFullYear()} Aditya Sinha
           </p>
           <nav className="flex items-center gap-5">
-            {NAV_LINKS.map((link) =>
-              link.href.startsWith('#') ? (
+            {NAV_LINKS.map((link) => {
+              const href = isHome ? link.href : `/${link.href}`;
+              return isHome ? (
                 <a
                   key={link.label}
-                  href={link.href}
+                  href={href}
                   className="text-[15px] text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
                 >
                   {link.label}
@@ -125,13 +129,13 @@ export default function LandingFooter({
               ) : (
                 <Link
                   key={link.label}
-                  href={link.href}
+                  href={href}
                   className="text-[15px] text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
                 >
                   {link.label}
                 </Link>
-              )
-            )}
+              );
+            })}
           </nav>
         </div>
 
