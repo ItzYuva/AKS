@@ -51,7 +51,7 @@ export default function GridBackground() {
       ctx!.clearRect(0, 0, w, h);
 
       const dark = isDark();
-      const baseAlpha = dark ? 0.14 : 0.15;
+      const baseAlpha = dark ? 0.09 : 0.1;
       const color = dark ? "255,255,255" : "0,0,0";
 
       const cols = Math.ceil(w / GRID_SIZE) + 2;
