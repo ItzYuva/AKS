@@ -173,8 +173,9 @@ export default function HeroAbout({ about, contact }: Props) {
             Resume
           </p>
           <a
-            href="/resume.pdf"
-            download="Aditya_Sinha_Resume.pdf"
+            href="/api/resume/download"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-[17px] font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:underline underline-offset-4 transition-colors"
           >
             <HiOutlineArrowDownTray className="w-[18px] h-[18px] text-zinc-400 shrink-0" />
