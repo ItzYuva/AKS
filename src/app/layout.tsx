@@ -37,7 +37,7 @@ export default function RootLayout({
     <body className={`${geistSans.className} bg-white dark:bg-[#09090b] transition-colors dark:text-white`}>
         <ThemeProvider>
           <GridBackground />
-          <div className="relative z-10 overflow-x-hidden">
+          <div className="relative z-[46] overflow-x-hidden">
             {children}
           </div>
           <ChatWidget />
