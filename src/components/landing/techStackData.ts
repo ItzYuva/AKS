@@ -16,6 +16,13 @@ import {
   SiSpringboot,
   SiOpenai,
   SiHuggingface,
+  SiPytorch,
+  SiScikitlearn,
+  SiAmazonwebservices,
+  SiFigma,
+  SiPandas,
+  SiOpencv,
+  SiLinux,
 } from 'react-icons/si';
 import { FaJava } from 'react-icons/fa';
 
@@ -44,6 +51,13 @@ export const techStack: TechItem[] = [
   { name: 'Postman', icon: SiPostman, color: '#FF6C37' },
   { name: 'OpenAI', icon: SiOpenai, color: '#412991', darkColor: '#a78bfa' },
   { name: 'Hugging Face', icon: SiHuggingface, color: '#FFD21E' },
+  { name: 'PyTorch', icon: SiPytorch, color: '#EE4C2C' },
+  { name: 'scikit-learn', icon: SiScikitlearn, color: '#F7931E' },
+  { name: 'Pandas', icon: SiPandas, color: '#150458', darkColor: '#7B7FD4' },
+  { name: 'OpenCV', icon: SiOpencv, color: '#5C3EE8' },
+  { name: 'AWS', icon: SiAmazonwebservices, color: '#232F3E', darkColor: '#FF9900' },
+  { name: 'Figma', icon: SiFigma, color: '#F24E1E' },
+  { name: 'Linux', icon: SiLinux, color: '#FCC624' },
 ];
 
 export function findTechIcon(name: string): TechItem | undefined {

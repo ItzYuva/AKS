@@ -64,15 +64,15 @@ export default function AdminResumePage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-2">Resume</h1>
-      <p className="text-gray-500 dark:text-gray-400 mb-8">
+      <h1 className="text-3xl font-medium mb-2">Resume</h1>
+      <p className="text-zinc-500 dark:text-zinc-400 mb-8">
         Upload your resume PDF. It will be available for download at /resume.pdf
       </p>
 
       {/* Status */}
-      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 mb-6">
+      <div className="bg-white dark:bg-[#0c0c0e] rounded-2xl border border-zinc-200 dark:border-white/15 p-6 mb-6">
         <div className="flex items-center gap-3">
-          <FaFilePdf className={`h-5 w-5 ${exists ? 'text-green-500' : 'text-gray-400'}`} />
+          <FaFilePdf className={`h-5 w-5 ${exists ? 'text-green-500' : 'text-zinc-400'}`} />
           <div>
             <p className="font-medium">
               {exists ? 'Resume is uploaded' : 'No resume uploaded yet'}
@@ -82,7 +82,7 @@ export default function AdminResumePage() {
                 href="/api/resume/download"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-primary hover:underline inline-flex items-center gap-1 mt-1"
+                className="text-sm text-zinc-900 dark:text-zinc-100 hover:underline inline-flex items-center gap-1 mt-1"
               >
                 View current resume <FaExternalLinkAlt className="h-3 w-3" />
               </a>
@@ -93,10 +93,10 @@ export default function AdminResumePage() {
 
       {/* Upload area */}
       <div
-        className={`bg-white dark:bg-gray-900 rounded-xl shadow-sm border-2 border-dashed p-10 text-center transition-colors cursor-pointer ${
+        className={`bg-white dark:bg-[#0c0c0e] rounded-2xl border-2 border-dashed p-10 text-center transition-colors cursor-pointer ${
           dragOver
-            ? 'border-primary bg-primary/5'
-            : 'border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
+            ? 'border-zinc-400 bg-zinc-100 dark:bg-zinc-800/50'
+            : 'border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500'
         }`}
         onClick={() => fileRef.current?.click()}
         onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
@@ -111,16 +111,16 @@ export default function AdminResumePage() {
           className="hidden"
         />
 
-        <FaUpload className={`h-8 w-8 mx-auto mb-4 ${uploading ? 'text-primary animate-pulse' : 'text-gray-400'}`} />
+        <FaUpload className={`h-8 w-8 mx-auto mb-4 ${uploading ? 'text-zinc-600 dark:text-zinc-300 animate-pulse' : 'text-zinc-400'}`} />
 
         {uploading ? (
-          <p className="text-gray-600 dark:text-gray-300 font-medium">Uploading...</p>
+          <p className="text-zinc-600 dark:text-zinc-300 font-medium">Uploading...</p>
         ) : (
           <>
-            <p className="text-gray-600 dark:text-gray-300 font-medium mb-1">
+            <p className="text-zinc-600 dark:text-zinc-300 font-medium mb-1">
               {exists ? 'Click to replace resume' : 'Click to upload resume'}
             </p>
-            <p className="text-sm text-gray-400 dark:text-gray-500">
+            <p className="text-sm text-zinc-400 dark:text-zinc-500">
               or drag and drop a PDF file here (max 10MB)
             </p>
           </>

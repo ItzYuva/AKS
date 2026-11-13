@@ -14,7 +14,9 @@ export default function PublicLayout({
       <main className="min-h-screen pt-16">
         {children}
       </main>
-      <LandingFooter />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <LandingFooter />
+      </div>
     </>
   )
 }

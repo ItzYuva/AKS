@@ -90,26 +90,26 @@ export default function AdminAbout() {
     setEducation(updated)
   }
 
-  const inputClass = "w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+  const inputClass = "w-full px-4 py-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-800/50 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400"
 
-  if (loading) return <p className="text-gray-500">Loading...</p>
+  if (loading) return <p className="text-zinc-500">Loading...</p>
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8">About</h1>
+      <h1 className="text-3xl font-medium mb-8">About</h1>
 
       <form onSubmit={handleSubmit} className="max-w-3xl space-y-10">
         {/* Bio */}
         <section>
-          <h2 className="text-xl font-semibold mb-4">Bio</h2>
+          <h2 className="text-xl font-medium mb-4">Bio</h2>
           <textarea value={bio} onChange={e => setBio(e.target.value)} required rows={4} className={inputClass} />
         </section>
 
         {/* Skills */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">Skills</h2>
-            <button type="button" onClick={addSkill} className="flex items-center gap-1 text-sm text-primary hover:underline">
+            <h2 className="text-xl font-medium">Skills</h2>
+            <button type="button" onClick={addSkill} className="flex items-center gap-1 text-sm text-zinc-900 dark:text-zinc-100 hover:underline">
               <FaPlus className="h-3 w-3" /> Add Skill
             </button>
           </div>
@@ -131,16 +131,16 @@ export default function AdminAbout() {
         {/* Experience */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">Experience</h2>
-            <button type="button" onClick={addExperience} className="flex items-center gap-1 text-sm text-primary hover:underline">
+            <h2 className="text-xl font-medium">Experience</h2>
+            <button type="button" onClick={addExperience} className="flex items-center gap-1 text-sm text-zinc-900 dark:text-zinc-100 hover:underline">
               <FaPlus className="h-3 w-3" /> Add Experience
             </button>
           </div>
           <div className="space-y-6">
             {experience.map((exp, i) => (
-              <div key={i} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 space-y-4">
+              <div key={i} className="bg-white dark:bg-[#0c0c0e] border border-zinc-200 dark:border-white/15 rounded-xl p-5 space-y-4">
                 <div className="flex justify-between items-start">
-                  <span className="text-sm font-medium text-gray-500">Experience #{i + 1}</span>
+                  <span className="text-sm font-medium text-zinc-500">Experience #{i + 1}</span>
                   {experience.length > 1 && (
                     <button type="button" onClick={() => removeExperience(i)} className="text-red-500 hover:underline text-sm">Remove</button>
                   )}
@@ -162,7 +162,7 @@ export default function AdminAbout() {
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <label className="text-sm font-medium">Description Points</label>
-                    <button type="button" onClick={() => addExpDesc(i)} className="text-xs text-primary hover:underline">+ Add Point</button>
+                    <button type="button" onClick={() => addExpDesc(i)} className="text-xs text-zinc-900 dark:text-zinc-100 hover:underline">+ Add Point</button>
                   </div>
                   {exp.description.map((desc, j) => (
                     <div key={j} className="flex gap-2 mb-2">
@@ -183,16 +183,16 @@ export default function AdminAbout() {
         {/* Education */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">Education</h2>
-            <button type="button" onClick={addEducation} className="flex items-center gap-1 text-sm text-primary hover:underline">
+            <h2 className="text-xl font-medium">Education</h2>
+            <button type="button" onClick={addEducation} className="flex items-center gap-1 text-sm text-zinc-900 dark:text-zinc-100 hover:underline">
               <FaPlus className="h-3 w-3" /> Add Education
             </button>
           </div>
           <div className="space-y-6">
             {education.map((edu, i) => (
-              <div key={i} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 space-y-4">
+              <div key={i} className="bg-white dark:bg-[#0c0c0e] border border-zinc-200 dark:border-white/15 rounded-xl p-5 space-y-4">
                 <div className="flex justify-between items-start">
-                  <span className="text-sm font-medium text-gray-500">Education #{i + 1}</span>
+                  <span className="text-sm font-medium text-zinc-500">Education #{i + 1}</span>
                   {education.length > 1 && (
                     <button type="button" onClick={() => removeEducation(i)} className="text-red-500 hover:underline text-sm">Remove</button>
                   )}
@@ -222,14 +222,14 @@ export default function AdminAbout() {
 
         {/* Chatbot Extra Info */}
         <section>
-          <h2 className="text-xl font-semibold mb-2">Chatbot Extra Info</h2>
-          <p className="text-sm text-gray-500 mb-4">Add any extra information about yourself that the AI chatbot should know (hobbies, fun facts, personal story, achievements, etc.). This won&apos;t appear on the website — only the chatbot uses it.</p>
+          <h2 className="text-xl font-medium mb-2">Chatbot Extra Info</h2>
+          <p className="text-sm text-zinc-500 mb-4">Add any extra information about yourself that the AI chatbot should know (hobbies, fun facts, personal story, achievements, etc.). This won&apos;t appear on the website — only the chatbot uses it.</p>
           <textarea value={chatbotInfo} onChange={e => setChatbotInfo(e.target.value)} rows={6} placeholder="E.g. I love playing chess, I'm a huge fan of open source, I won a hackathon in 2023..." className={inputClass} />
         </section>
 
         <div className="flex items-center gap-4">
           <button type="submit" disabled={saving}
-            className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 transition-all">
+            className="px-6 py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:opacity-50 transition-all">
             {saving ? 'Saving...' : 'Save About'}
           </button>
           {success && <span className="text-green-500 font-medium">Saved successfully!</span>}

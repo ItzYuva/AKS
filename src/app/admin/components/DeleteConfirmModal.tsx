@@ -33,19 +33,19 @@ export default function DeleteConfirmModal({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
           >
-            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl p-6 max-w-sm w-full">
+            <div className="bg-white dark:bg-[#0c0c0e] rounded-xl shadow-xl p-6 max-w-sm w-full">
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
                   <FaExclamationTriangle className="h-6 w-6 text-red-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Delete {itemName}?</h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                <p className="text-zinc-500 dark:text-zinc-400 mb-6">
                   This action cannot be undone. Are you sure you want to delete this {itemName.toLowerCase()}?
                 </p>
                 <div className="flex gap-3 w-full">
                   <button
                     onClick={onCancel}
-                    className="flex-1 py-2 px-4 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    className="flex-1 py-2 px-4 rounded-lg border border-zinc-200 dark:border-white/15 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
                   >
                     Cancel
                   </button>
