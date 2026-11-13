@@ -79,7 +79,7 @@ export default function AdminResumePage() {
             </p>
             {exists && (
               <a
-                href="/resume.pdf"
+                href="/api/resume/download"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-primary hover:underline inline-flex items-center gap-1 mt-1"
