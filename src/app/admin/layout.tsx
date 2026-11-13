@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import AdminSidebar from './components/AdminSidebar'
+import NavigationProgress from './components/NavigationProgress'
 
 export default function AdminLayout({
   children,
@@ -16,11 +17,14 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen">
-      <AdminSidebar />
-      <main className="flex-1 p-6 md:p-8 bg-gray-50 dark:bg-gray-950 overflow-auto">
-        {children}
-      </main>
-    </div>
+    <>
+      <NavigationProgress />
+      <div className="flex min-h-screen">
+        <AdminSidebar />
+        <main className="flex-1 p-6 md:p-8 bg-zinc-50 dark:bg-[#0a0a0a] overflow-auto">
+          {children}
+        </main>
+      </div>
+    </>
   )
 }

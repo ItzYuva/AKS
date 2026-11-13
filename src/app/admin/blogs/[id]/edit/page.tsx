@@ -129,14 +129,14 @@ export default function EditBlog({ params }: { params: Promise<{ id: string }> }
     else setSaving(false)
   }
 
-  if (loading) return <p className="text-gray-500">Loading...</p>
+  if (loading) return <p className="text-zinc-500">Loading...</p>
 
   return (
     <div>
-      <Link href="/admin/blogs" className="inline-flex items-center gap-2 text-gray-500 hover:text-primary mb-6">
+      <Link href="/admin/blogs" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-6">
         <FaArrowLeft className="h-4 w-4" /> Back to Blogs
       </Link>
-      <h1 className="text-3xl font-bold mb-8">Edit Blog</h1>
+      <h1 className="text-3xl font-medium mb-8">Edit Blog</h1>
 
       <form onSubmit={handleSubmit} className="max-w-4xl space-y-6">
         
@@ -152,7 +152,7 @@ export default function EditBlog({ params }: { params: Promise<{ id: string }> }
           />
           {imagePreview ? (
             <div className="relative">
-              <img src={imagePreview} alt="Preview" className="w-full aspect-video object-cover rounded-lg border border-gray-300 dark:border-gray-700" />
+              <img src={imagePreview} alt="Preview" className="w-full aspect-video object-cover rounded-lg border border-zinc-200 dark:border-white/15" />
               <button
                 type="button"
                 onClick={() => {
@@ -174,11 +174,11 @@ export default function EditBlog({ params }: { params: Promise<{ id: string }> }
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="w-full py-12 border-2 border-dashed border-gray-400 dark:border-gray-600 rounded-lg flex flex-col items-center justify-center gap-2 text-gray-500 hover:border-primary hover:text-primary transition-colors"
+              className="w-full py-12 border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg flex flex-col items-center justify-center gap-2 text-zinc-500 hover:border-zinc-400 dark:hover:border-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
             >
               <FaCloudUploadAlt className="h-8 w-8" />
               <span className="text-sm font-medium">Click to upload cover image</span>
-              <span className="text-xs text-gray-400">PNG, JPG, WEBP up to 5MB</span>
+              <span className="text-xs text-zinc-400">PNG, JPG, WEBP up to 5MB</span>
             </button>
           )}
         </div>
@@ -187,19 +187,19 @@ export default function EditBlog({ params }: { params: Promise<{ id: string }> }
           <div>
             <label className="block text-sm font-medium mb-2">Title</label>
             <input name="title" value={form.title} onChange={handleChange} required
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" />
+              className="w-full px-4 py-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-800/50 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-2">Slug</label>
             <input name="slug" value={form.slug} onChange={handleChange} required
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" />
+              className="w-full px-4 py-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-800/50 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400" />
           </div>
         </div>
 
         <div>
            <label className="block text-sm font-medium mb-2">Excerpt</label>
            <textarea name="excerpt" value={form.excerpt} onChange={handleChange} required rows={3}
-             className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" />
+             className="w-full px-4 py-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-800/50 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400" />
         </div>
 
         <div>
@@ -223,11 +223,11 @@ export default function EditBlog({ params }: { params: Promise<{ id: string }> }
         <div>
           <label className="block text-sm font-medium mb-2">Tags (comma-separated)</label>
           <input name="tags" value={form.tags} onChange={handleChange} placeholder="e.g., AI, Machine Learning, RAG"
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" />
+            className="w-full px-4 py-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-800/50 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400" />
         </div>
 
         <button type="submit" disabled={saving || uploading}
-          className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 transition-all">
+          className="px-6 py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:opacity-50 transition-all">
           {saving ? 'Saving...' : 'Save Changes'}
         </button>
       </form>

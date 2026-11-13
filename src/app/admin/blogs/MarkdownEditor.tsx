@@ -59,13 +59,13 @@ export default function MarkdownEditor({
     }, 0)
   }, [value, onChange, textareaRef])
 
-  const btnClass = "p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary transition-colors"
+  const btnClass = "p-2 rounded-md text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
 
-  const Separator = () => <div className="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-0.5" />
+  const Separator = () => <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-0.5" />
 
   return (
     <div>
-      <div className="flex items-center gap-0.5 flex-wrap p-2 border border-b-0 border-gray-300 dark:border-gray-700 rounded-t-lg bg-gray-50 dark:bg-gray-800/50">
+      <div className="flex items-center gap-0.5 flex-wrap p-2 border border-b-0 border-zinc-200 dark:border-white/10 rounded-t-lg bg-zinc-50 dark:bg-zinc-800/50">
         <button type="button" title="Heading 2" className={btnClass}
           onClick={() => insertLine('## ')}>
           <FaHeading className="h-3.5 w-3.5" />
@@ -139,7 +139,7 @@ export default function MarkdownEditor({
         </button>
 
         {uploadingInline && (
-          <span className="ml-2 text-xs text-primary animate-pulse">Uploading image...</span>
+          <span className="ml-2 text-xs text-zinc-600 dark:text-zinc-300 animate-pulse">Uploading image...</span>
         )}
       </div>
 
@@ -151,7 +151,7 @@ export default function MarkdownEditor({
         required
         rows={18}
         placeholder="Write your blog content here...&#10;&#10;Use the toolbar above to format text, or write Markdown directly."
-        className="w-full px-4 py-3 rounded-b-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none font-mono text-sm"
+        className="w-full px-4 py-3 rounded-b-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0c0c0e] focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400 font-mono text-sm"
       />
     </div>
   )

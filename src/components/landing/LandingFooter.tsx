@@ -75,7 +75,7 @@ export default function LandingFooter({
 
   return (
     <footer className="pt-8 pb-28 sm:pb-12">
-      <div className="max-w-4xl mx-auto px-5 md:px-6">
+      <div>
         {/* Quote + visitor counter card */}
         <div className="rounded-2xl border border-zinc-200 dark:border-white/15 bg-white dark:bg-[#0c0c0e] p-5 sm:p-6 mb-8">
           <div className="flex flex-col sm:flex-row sm:items-stretch gap-0">

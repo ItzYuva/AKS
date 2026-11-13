@@ -14,10 +14,25 @@ export default function ContactForm() {
     'idle' | 'loading' | 'success' | 'error'
   >('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [emailTouched, setEmailTouched] = useState(false);
+
+  const disposableDomains = [
+    'tempmail.com', 'throwaway.email', 'guerrillamail.com',
+    'mailinator.com', 'yopmail.com', 'sharklasers.com',
+    'trashmail.com', 'fakeinbox.com', 'tempail.com',
+    'dispostable.com', 'maildrop.cc', 'guerrillamailblock.com',
+    'grr.la', 'guerrillamail.info', 'temp-mail.org',
+  ];
+  const emailRegex =
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const emailDomain = form.email.split('@')[1]?.toLowerCase() || '';
+  const emailValid =
+    emailRegex.test(form.email) && !disposableDomains.includes(emailDomain);
+  const showEmailError = emailTouched && form.email.length > 0 && !emailValid;
 
   const isValid =
     form.name.trim().length >= 2 &&
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) &&
+    emailValid &&
     form.message.trim().length >= 10;
 
   async function handleSubmit(e: FormEvent) {
@@ -54,6 +69,7 @@ export default function ContactForm() {
 
       setStatus('success');
       setForm({ name: '', email: '', message: '', website: '' });
+      setEmailTouched(false);
     } catch (err) {
       setStatus('error');
       setErrorMsg(
@@ -130,9 +146,17 @@ export default function ContactForm() {
           onChange={(e) =>
             setForm((f) => ({ ...f, email: e.target.value }))
           }
-          className="w-full h-11 px-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/10 text-base text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400 transition-colors"
+          onBlur={() => setEmailTouched(true)}
+          className={`w-full h-11 px-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border text-base text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none transition-colors ${
+            showEmailError
+              ? 'border-zinc-800 dark:border-zinc-300 focus:border-zinc-800 dark:focus:border-zinc-300'
+              : 'border-zinc-200 dark:border-white/10 focus:border-zinc-400 dark:focus:border-zinc-400'
+          }`}
           placeholder="Email Address"
         />
+        {showEmailError && (
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Please enter a valid email address</p>
+        )}
       </div>
 
       <div>

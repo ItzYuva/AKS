@@ -49,13 +49,13 @@ export default function AdminContact() {
     if (res.ok) setSuccess(true)
   }
 
-  const inputClass = "w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+  const inputClass = "w-full px-4 py-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-800/50 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-400"
 
-  if (loading) return <p className="text-gray-500">Loading...</p>
+  if (loading) return <p className="text-zinc-500">Loading...</p>
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8">Contact Info</h1>
+      <h1 className="text-3xl font-medium mb-8">Contact Info</h1>
 
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
         <div>
@@ -85,7 +85,7 @@ export default function AdminContact() {
 
         <div className="flex items-center gap-4">
           <button type="submit" disabled={saving}
-            className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 transition-all">
+            className="px-6 py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:opacity-50 transition-all">
             {saving ? 'Saving...' : 'Save Contact Info'}
           </button>
           {success && <span className="text-green-500 font-medium">Saved successfully!</span>}

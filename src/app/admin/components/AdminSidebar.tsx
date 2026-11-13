@@ -47,9 +47,9 @@ export default function AdminSidebar() {
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-        <h1 className="text-xl font-bold text-primary">Admin Panel</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your portfolio</p>
+      <div className="p-6 border-b border-zinc-200 dark:border-white/15">
+        <h1 className="text-xl font-medium text-zinc-900 dark:text-zinc-100">Admin Panel</h1>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Manage your portfolio</p>
       </div>
 
       <nav className="flex-1 p-4 space-y-1">
@@ -63,8 +63,8 @@ export default function AdminSidebar() {
               onClick={() => setMobileOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 active
-                  ? 'bg-primary text-white'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900'
+                  : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
               }`}
             >
               <Icon className="h-5 w-5" />
@@ -74,10 +74,10 @@ export default function AdminSidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
+      <div className="p-4 border-t border-zinc-200 dark:border-white/15 space-y-2">
         <button
           onClick={toggleTheme}
-          className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
         >
           {theme === 'dark' ? <FaSun className="h-5 w-5" /> : <FaMoon className="h-5 w-5" />}
           <span className="font-medium">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
@@ -99,7 +99,7 @@ export default function AdminSidebar() {
       {/* Mobile hamburger */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-lg md:hidden"
+        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white dark:bg-[#0c0c0e] shadow-lg md:hidden"
       >
         {mobileOpen ? <FaTimes className="h-5 w-5" /> : <FaBars className="h-5 w-5" />}
       </button>
@@ -114,7 +114,7 @@ export default function AdminSidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed md:static inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transform transition-transform md:transform-none ${
+        className={`fixed md:static inset-y-0 left-0 z-40 w-64 bg-white dark:bg-[#0c0c0e] border-r border-zinc-200 dark:border-white/15 transform transition-transform md:transform-none ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
