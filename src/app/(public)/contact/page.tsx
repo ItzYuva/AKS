@@ -2,7 +2,7 @@ import connectDB from '@/lib/mongodb'
 import Contact from '@/models/Contact'
 import ContactForm from './ContactForm'
 
-export const revalidate = 3600
+export const revalidate = 0
 
 export default async function ContactPage() {
   let contactInfo = null

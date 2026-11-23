@@ -22,6 +22,7 @@ export async function PUT(request: NextRequest) {
     await connectDB()
     const body = await request.json()
     const contact = await Contact.findOneAndUpdate({}, body, { new: true, upsert: true })
+    revalidatePath('/')
     revalidatePath('/contact')
     return NextResponse.json(contact)
   } catch (error) {
