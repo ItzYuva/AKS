@@ -14,7 +14,7 @@ import BlogsPreview from '@/components/landing/BlogsPreview';
 import ContactSection from '@/components/landing/ContactSection';
 import LandingFooter from '@/components/landing/LandingFooter';
 
-export const revalidate = 3600;
+export const revalidate = 0;
 
 interface AboutDoc {
   bio: string;

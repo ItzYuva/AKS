@@ -4,7 +4,7 @@ import AboutContent, { type AboutData } from './AboutContent'
 
 // Cached static render; about content is baked into the HTML (no client fetch,
 // no per-visit DB hit). Admin edits trigger on-demand revalidation.
-export const revalidate = 3600
+export const revalidate = 0
 
 export default async function AboutPage() {
   let about: AboutData | null = null

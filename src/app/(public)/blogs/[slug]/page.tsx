@@ -4,7 +4,7 @@ import Blog from '@/models/Blog'
 import BlogContent from './BlogContent'
 import React from 'react'
 
-export const revalidate = 3600
+export const revalidate = 0
 
 // Prerender every blog post at build time so opening any post is instant.
 // Posts added later still render on-demand and get cached (dynamicParams default).

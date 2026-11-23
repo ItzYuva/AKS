@@ -20,6 +20,7 @@ export async function PUT(request: NextRequest) {
     await connectDB()
     const body = await request.json()
     const about = await About.findOneAndUpdate({}, body, { new: true, upsert: true })
+    revalidatePath('/')
     revalidatePath('/about')
     return NextResponse.json(about)
   } catch {
